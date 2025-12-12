@@ -2,5 +2,7 @@ title: Decentralized Trust Interop Profile (DTIP)
 description: A Lightweight Trust Profile for Decentralized and Interoperable Digital Collaboration
 remote_theme: pages-themes/cayman@v0.2.0
 search_enabled: true
+highlighter: rouge
+rouge_theme: github  # or monokai, github, etc.
 plugins:
 - jekyll-remote-theme
