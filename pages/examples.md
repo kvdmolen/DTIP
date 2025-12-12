@@ -8,9 +8,9 @@ This document illustrates how to implement the trust protocol through progressiv
 
 ```mermaid
 graph LR
-    R["Retailer<br/><small>did:web:retailer.example</small>"]
-    L["Logistics Company<br/><small>did:web:logistics.example</small>"]
-    R -->|"DID Auth"| L
+    DC["Data Consumer<br/><small>did:web:consumer.example</small>"]
+    DO["Data Owner<br/><small>did:web:owner.example</small>"]
+    DC -->|"DID Auth"| DO
 ```
 
 ### Scenario
@@ -72,6 +72,14 @@ For organizations already using OAuth2, this can be implemented as an additional
 
 ## Example 2: Resource-Specific Permissions with Access-VCs
 
+```mermaid
+graph LR
+    DC["Data Consumer<br/><small>did:web:consumer.example</small>"]
+    DO["Data Owner<br/><small>did:web:owner.example</small>"]
+    DO -.->|"issues Access-VC"| DC
+    DC -->|"presents Access-VC"| DO
+```
+
 ### Scenario
 
 The logistics company wants more granular control. The retailer should only access shipments where they're the recipient. A warehouse partner should be able to update inventory counts but not view pricing. Different partners need different permissions on different resources.
@@ -125,6 +133,16 @@ Revocation can be handled through standard VC status lists. The authorization se
 ---
 
 ## Example 3: Delegated Access (Delegation Chains)
+
+```mermaid
+graph LR
+    DO["Data Owner<br/><small>did:web:owner.example</small>"]
+    DC["Data Consumer<br/><small>did:web:consumer.example</small>"]
+    DG["Delegate<br/><small>did:web:delegate.example</small>"]
+    DO -.->|"issues Access-VC"| DC
+    DC -.->|"issues Delegation-VC"| DG
+    DG -->|"presents delegation chain"| DO
+```
 
 ### Scenario
 
@@ -188,6 +206,15 @@ Delegation-VCs should have short expiration times and can be revoked by the dele
 
 ## Example 4: Unknown Party with Trust Chain Verification (Trust Chains)
 
+```mermaid
+graph LR
+    UP["Unknown Party<br/><small>did:web:unknown.example</small>"]
+    DO["Data Owner<br/><small>did:web:owner.example</small>"]
+    TA["Trust Anchor<br/><small>did:web:gaia-x.eu</small>"]
+    UP -->|"requests access"| DO
+    DO -.->|"verifies trust chain"| TA
+```
+
 ### Scenario
 
 A new carrier requests access to the logistics company's freight matching platform. The logistics company has never worked with this carrier. The carrier has a Gaia-X participant credential and a transport operator license from a national authority.
@@ -245,6 +272,14 @@ This is where Gaia-X or iSHARE credentials become valuable—not as gatekeepers,
 
 ## Example 5: Event-Driven Notifications
 
+```mermaid
+graph LR
+    DC["Data Consumer<br/><small>did:web:consumer.example</small>"]
+    DO["Data Owner<br/><small>did:web:owner.example</small>"]
+    DC -->|"subscribe via DIDComm"| DO
+    DO -.->|"notifications via DIDComm"| DC
+```
+
 ### Scenario
 
 The retailer wants to be notified immediately when their shipment status changes, rather than polling the API. They also want alerts when estimated delivery time changes by more than 2 hours.
@@ -299,6 +334,18 @@ Subscriptions should have expiration times and require renewal, preventing stale
 ---
 
 ## Example 6: Full Ecosystem with Discovery
+
+```mermaid
+graph TB
+    DO1["Data Owner 1<br/><small>did:web:owner1.example</small>"]
+    DO2["Data Owner 2<br/><small>did:web:owner2.example</small>"]
+    HUB["Discovery Hub<br/><small>did:web:hub.example</small>"]
+    DC["Data Consumer<br/><small>did:web:consumer.example</small>"]
+    DO1 -.->|"publishes offerings"| HUB
+    DO2 -.->|"publishes offerings"| HUB
+    DC -->|"searches"| HUB
+    DC -->|"requests access"| DO1
+```
 
 ### Scenario
 
