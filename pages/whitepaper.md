@@ -8,7 +8,7 @@
 
 The **Decentralized Trust Interop Profile (DTIP)** is a lightweight technical profile that acts as a trust base layer for digital data-exchange. Unlike existing dataspace initiatives, DTIP ensures that every party retains full autonomy over its own trust decisions, and thus enable free participation without centralized onboarding. It specifies a cohesive set of open standards that ensure interoperability across identity, trust, access, delegation, and peer-to-peer communication. DTIP is designed to operate on top of existing infrastructure, and beneath domain-specific semantics, industry standards or rules for participation. It aims to complement dataspace initiatives such as Gaia-X, iSHARE, and the Data Space Protocol (DSP), and work alongside eIDAS 2.0.
 
-In DTIP, both organizations and individuals are identified by a [DID](#appendix-glossary), where the corresponding **public** [DID Document](#appendix-glossary) serves as a foundational anchor: it contains public [verifiable credentials](#appendix-glossary), available service-endpoints, and other relevant metadata about the organization. Access to service-endpoints may be granted either through DID-based authentication, or by issuing a dedicated [Access-VC](#appendix-glossary). These Access-VCs may be delegated to partners or subcontractors, providing a verifiable audit trail. Trust is established by verifying the (chain of) public trust- or identity-VCs, which may inlcude Gaia-X credentials or credentials from some other trust authority. Trust may be stored as a whitelisted DID for faster future data-exchange.
+In DTIP, both organizations and individuals are identified by a [DID](#glossary), where the corresponding **public** [DID Document](#glossary) serves as a foundational anchor: it contains public [verifiable credentials](#glossary), available service-endpoints, and other relevant metadata about the organization. Access to service-endpoints may be granted either through DID-based authentication, or by issuing a dedicated [Access-VC](#glossary). These Access-VCs may be delegated to partners or subcontractors, providing a verifiable audit trail. Trust is established by verifying the (chain of) public trust- or identity-VCs, which may inlcude Gaia-X credentials or credentials from some other trust authority. Trust may be stored as a whitelisted DID for faster future data-exchange.
 
 ---
 
@@ -18,7 +18,7 @@ European programmes like DSSC and DSIC have made digital collaboration across or
 
 A shared limitation is that even when two organizations already trust each other, they cannot exchange data directly without going through the dataspace infrastructure. The technical footprint for adoption is substantial with a high integration effort, and the introduction of new standards
 
-However, all building blocks for a lightweight, decentralized trust infrastructure already exist: the W3C Decentralized Identifiers (DIDs), Verifiable Credentials (VCs), and [DIDComm](#appendix-glossary) messages. What's missing is agreement on how to combine them into a coherent base layer for digital collaboration.
+However, all building blocks for a lightweight, decentralized trust infrastructure already exist: the W3C Decentralized Identifiers (DIDs), Verifiable Credentials (VCs), and [DIDComm](#glossary) messages. What's missing is agreement on how to combine them into a coherent base layer for digital collaboration.
 
 This document proposes exactly that: a base layer specifying how these existing standards should be applied for authentication, authorization, trust, delegation and communication in the context of a dataspace. The goal is not to invent something new, but to agree to a set of choices so organizations can adopt a common technical language.
 
@@ -73,8 +73,8 @@ This mirrors the web: open standards enable competition and specialization while
 
 Two concepts form the backbone:
 
-- **Decentralized Identifiers ([DID](#appendix-glossary))**
-- **Verifiable Credentials ([VC](#appendix-glossary))**
+- **Decentralized Identifiers ([DID](#glossary))**
+- **Verifiable Credentials ([VC](#glossary))**
 
 Understanding their distinct roles, and the difference between an **identifier** and an **identity** is essential:
 
@@ -107,7 +107,7 @@ The DID Document can declare services in its `service` section. It's the basis o
 
 - **Public Credentials**. VCs that the holder chooses to set public for anyone to verify. Organizational identity from a business registry, membership in an industry association, compliance certifications. These credentials establish trustworthiness without requiring any interaction. A verifying party simply resolves the DID Document and checks the credentials.
 - **Messaging via DIDComm**. DIDComm provides secure, authenticated communication between two DIDs. Messages are end-to-end encrypted, with sender identity cryptographically verified. DIDComm may be used for contract negotiation, subscription notifications, event updates, and also credential issuance. The DID Document publishes the endpoint where messages should be sent.
-- **[Offerings](#appendix-glossary)**. The data products or services available at this DID. An offering specifies what is available (title, description, category), what access requirements apply (credentials needed, trust level), and how to access it (API endpoints, subscription channels). Publishing offerings in the DID Document enables discovery so other parties or "[discovery hubs](#appendix-glossary)" can see what's available without prior arrangement.
+- **[Offerings](#glossary)**. The data products or services available at this DID. An offering specifies what is available (title, description, category), what access requirements apply (credentials needed, trust level), and how to access it (API endpoints, subscription channels). Publishing offerings in the DID Document enables discovery so other parties or "[discovery hubs](#glossary)" can see what's available without prior arrangement.
 
 The approach of public credentials differs from the Eclipse Decentralized Claims Protocol (DCP). DCP requires sending VCs in a Verifiable Presentation for each and every transaction. That model does suit human-to-machine interactions, where selective disclosure of personal attributes matters and each transaction is typically one-time and focused on revealing specific claims. However, in business-to-business or machine-to-machine data sharing, the concerns differ: trust, organizational identity, and membership matter more than personal information, and relationships persist across many transactions. Public credentials are more practical, as verifiers may already have you whitelisted from a previous KYC check, making it unnecessary to continuously exchange the same organizational credentials. After initial trust verification, simple DID authentication might suffice.
 
@@ -223,13 +223,13 @@ When resources require specific permissions—scoped to particular data, limited
 
 This is the core of controlled access: who, what resource, which actions, until when, and whether delegation is allowed. The provider's authorization server verifies the Access-VC and issues a standard access token for the API—the same token format the API already expects.
 
-**Using an Access-VC:** The consumer presents the Access-VC in a signed [Verifiable Presentation (VP)](#appendix-glossary). The provider verifies both the VP signature (proving DID ownership) and the Access-VC itself (valid issuer signature, not expired, resource matches, not revoked). Upon successful verification, the provider issues an access token, and API access proceeds normally.
+**Using an Access-VC:** The consumer presents the Access-VC in a signed [Verifiable Presentation (VP)](#glossary). The provider verifies both the VP signature (proving DID ownership) and the Access-VC itself (valid issuer signature, not expired, resource matches, not revoked). Upon successful verification, the provider issues an access token, and API access proceeds normally.
 
-**[Usage Policies](#appendix-glossary) (Optional):** Access-VCs can optionally include a `usagePolicy` field documenting additional constraints: permitted purposes, data retention expectations, geographic restrictions, or references to ODRL policies. These are *documentation*, not technical enforcement—the protocol cannot prevent a receiver from violating usage terms. What it does provide is an audit trail: the Access-VC documents what was agreed, and access logs show who accessed what. Enforcement remains a contractual and legal matter, as it realistically must be. Organizations needing formal policy negotiation can layer protocols like DSP on top, but for most B2B relationships, the business contract and mutual trust already cover these concerns.
+**[Usage Policies](#glossary) (Optional):** Access-VCs can optionally include a `usagePolicy` field documenting additional constraints: permitted purposes, data retention expectations, geographic restrictions, or references to ODRL policies. These are *documentation*, not technical enforcement—the protocol cannot prevent a receiver from violating usage terms. What it does provide is an audit trail: the Access-VC documents what was agreed, and access logs show who accessed what. Enforcement remains a contractual and legal matter, as it realistically must be. Organizations needing formal policy negotiation can layer protocols like DSP on top, but for most B2B relationships, the business contract and mutual trust already cover these concerns.
 
-### 3.3 Delegated Access ([Delegation Chain](#appendix-glossary))
+### 3.3 Delegated Access ([Delegation Chain](#glossary))
 
-Organizations holding an Access-VC can delegate access to partners, subcontractors, or automated systems by issuing a new credential that references the original. This creates a **[delegation chain](#appendix-glossary)**—a sequence of credentials transferring access rights from party to party, with each link referencing its parent.
+Organizations holding an Access-VC can delegate access to partners, subcontractors, or automated systems by issuing a new credential that references the original. This creates a **[delegation chain](#glossary)**—a sequence of credentials transferring access rights from party to party, with each link referencing its parent.
 
 **Example: Multimodal Freight**
 
@@ -280,7 +280,7 @@ When a party presents an Access-VC—whether issued directly to them or delegate
 
 For a directly-issued Access-VC, verification is straightforward: check the issuer signature, confirm the credential is not expired or revoked, and verify the presenter controls the DID to which it was issued.
 
-For delegated access, the provider walks the chain. Each [Delegation-VC](#appendix-glossary) references its parent credential. The provider verifies that each delegation was issued by the holder of the parent credential, that each stays within the scope of its parent (no escalation of privileges), and that no credential in the chain has been revoked. The chain must terminate at an Access-VC originally issued by this provider.
+For delegated access, the provider walks the chain. Each [Delegation-VC](#glossary) references its parent credential. The provider verifies that each delegation was issued by the holder of the parent credential, that each stays within the scope of its parent (no escalation of privileges), and that no credential in the chain has been revoked. The chain must terminate at an Access-VC originally issued by this provider.
 
 Even if the provider has never seen any of the intermediate parties, cryptographic verification proves the access is legitimate. The full chain also serves as an audit trail, documenting exactly how this party came to have access.
 
@@ -294,7 +294,7 @@ The provider decides which credentials matter for their context. A logistics pla
 
 ### 4.3 Trust Chains via Credential Issuers
 
-Public credentials become more powerful through **[trust chains](#appendix-glossary)**—a distinct mechanism from delegation chains. While delegation chains transfer access rights through Access-VCs, trust chains establish identity and trustworthiness through public credentials published in DID Documents.
+Public credentials become more powerful through **[trust chains](#glossary)**—a distinct mechanism from delegation chains. While delegation chains transfer access rights through Access-VCs, trust chains establish identity and trustworthiness through public credentials published in DID Documents.
 
 A provider may not directly recognize the issuer of a requester's credential, but can verify trust transitively through the issuer's own public credentials.
 
@@ -326,7 +326,7 @@ Without centralization, there's no single catalog of available data. Each DID Do
 
 ### 5.2 Discovery Hubs
 
-A **[Discovery Hub](#appendix-glossary)** is a service that indexes offerings from a set of DIDs and provides search capabilities. The hub periodically resolves DID Documents and indexes the offerings it finds. Users can query by category, credential requirements, keywords, or other criteria. Results link back to provider DIDs, where users can examine credentials and initiate access requests.
+A **[Discovery Hub](#glossary)** is a service that indexes offerings from a set of DIDs and provides search capabilities. The hub periodically resolves DID Documents and indexes the offerings it finds. Users can query by category, credential requirements, keywords, or other criteria. Results link back to provider DIDs, where users can examine credentials and initiate access requests.
 
 Hubs don't store data or mediate access—they simply make offerings discoverable.
 

@@ -5,8 +5,8 @@ mermaid.initialize({ startOnLoad: false, theme: 'neutral' })
 
 // Page configuration
 const pages = [
-  { id: 'home', label: 'Home', file: 'pages/home.md' },
-  // { id: 'guide', label: 'Guide', file: 'pages/guide.md' },
+  { id: 'whitepaper', label: 'Whitepaper', file: 'pages/whitepaper.md' },
+  { id: 'specifications', label: 'Specifications', file: 'pages/specifications.md' },
   { id: 'examples', label: 'Examples', file: 'pages/examples.md' }
 ]
 
@@ -14,7 +14,7 @@ const pages = [
 const template = `
   <header class="site-header">
     <h1 class="site-title">
-      <a href="#/home" @click.prevent="switchPage('home')">DTIP</a>
+      <a href="#/whitepaper" @click.prevent="switchPage('whitepaper')">DTIP</a>
     </h1>
     <span class="site-subtitle">Decentralized Trust Interop Profile</span>
     <nav class="page-menu">
@@ -97,7 +97,7 @@ const getPageFromHash = () => {
       return pageId
     }
   }
-  return 'home'
+  return 'whitepaper'
 }
 
 const getSectionFromHash = () => {
