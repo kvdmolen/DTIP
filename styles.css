@@ -48,8 +48,29 @@ html, body {
   padding-left: 16px;
   border-left: 1px solid #e0e0e0;
 }
-.site-header .version-badge {
+.site-header .page-menu {
   margin-left: auto;
+  display: flex;
+  gap: 24px;
+}
+.site-header .page-menu-item {
+  padding: 0;
+  background: none;
+  border: none;
+  font-size: 1.1em;
+  font-weight: 700;
+  color: #555;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+.site-header .page-menu-item:hover {
+  color: #3aaaff;
+}
+.site-header .page-menu-item.active {
+  color: #3aaaff;
+}
+.site-header .version-badge {
+  margin-left: 32px;
   padding: 4px 12px;
   background: #fff3cd;
   color: #856404;
@@ -290,6 +311,15 @@ h1[id], h2[id], h3[id], h4[id], h5[id], h6[id] {
     padding: 0 16px;
   }
   .site-header .site-subtitle {
+    display: none;
+  }
+  .site-header .page-menu {
+    gap: 16px;
+  }
+  .site-header .page-menu-item {
+    font-size: 1em;
+  }
+  .site-header .version-badge {
     display: none;
   }
   .toc-sidebar {
