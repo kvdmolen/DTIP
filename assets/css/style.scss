@@ -30,12 +30,12 @@ $hr-border-color: #eff0f1;
    ========================= */
 @import "{{ site.theme }}";
 
-// /* Example: JSON syntax highlighting */
-// .highlight .k { color: #d73a49; }   /* keywords like true/false */
-// .highlight .s { color: #032f62; }   /* strings */
-// .highlight .n { color: #005cc5; }   /* numbers */
-// .highlight .p { color: #22863a; }   /* punctuation {} [] , : */
-// .highlight .c { color: #6a737d; font-style: italic; } /* comments */
+
+.highlight .k { color: #d73a49; }   /* keywords true/false/null */
+.highlight .s { color: #032f62; }   /* strings */
+.highlight .n { color: #005cc5; }   /* numbers */
+.highlight .p { color: #24292e; }   /* punctuation {} [] , : */
+.highlight .c { color: #6a737d; font-style: italic; } /* comments */
 
 /* =========================
    Extra custom modern styling
