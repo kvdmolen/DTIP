@@ -84,14 +84,14 @@ Two concepts form the backbone:
 
 Understanding their distinct roles, and the difference between an **identifier** and an **identity** is essential:
 
-- The DID is an **identifier**. It says nothing about who or what that entity actually is. Think of it as an empty wallet.
-- The VC can provide the **identity**: a verifiable proof of a legal name, registration number, certification or membership, issued by recognized parties.
+- The DID provides a unique **identifier**. It says nothing about who or what that identifier actually is. Think of it as an empty wallet.
+- The VC provides the **identity**: a verifiable proof of a legal name, registration number, certification or membership, issued by recognized parties. It's the card inside the wallet.
 
-And a VC is **bound** to a DID: it's essentially the identity or membership card in the wallet.
+Note that a VC is **bound** to a DID, meaning that a VC is always issued to one specific DID.
 
 ### 2.1 Decentralized Identifiers (DIDs)
 
-A **DID** is a globally unique identifier, represented by a simple string. It resolves to a **DID Document**. DIDs are not controlled by any central authority. They are anchored through various methods, on web domains (`did:web`), derived purely from cryptographic keys (`did:key`), or registered on distributed ledgers.
+So a **DID** is a globally unique identifier, represented by a simple string. It resolves to a **DID Document**. DIDs are not controlled by any central authority. They are anchored through various methods, on web domains (`did:web`), derived purely from cryptographic keys (`did:key`), or registered on distributed ledgers.
 
 At its core, a DID represents a public/private key pair. The public DID Document contains the corresponding public key, and the holder possesses the private key. Anyone can verify that a message or signature came from the DID holder by checking it against the public key, without needing to contact any authority.
 
