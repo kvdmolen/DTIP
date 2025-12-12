@@ -6,6 +6,13 @@ This document illustrates how to implement the trust protocol through progressiv
 
 ## Example 1: Simple Two-Party Data Sharing
 
+```mermaid
+graph LR
+    R["Retailer<br/><small>did:web:retailer.example</small>"]
+    L["Logistics Company<br/><small>did:web:logistics.example</small>"]
+    R -->|"DID Auth"| L
+```
+
 ### Scenario
 
 A logistics company (Data Owner) has a shipment tracking API. A retail partner (Data Consumer) needs access. They already know and trust each other through an existing business relationship.

@@ -464,7 +464,7 @@ The technologies already exist. By agreeing on how to apply them, we establish a
 *This proposal is open for discussion and refinement. Contributions are welcome.*
 
 
-# Annex: Two Types of Credential Chains
+## Appendix: Two Types of Credential Chains
 
 The protocol uses two distinct types of credential chains for different purposes:
 

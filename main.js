@@ -1,5 +1,8 @@
 const { createApp, ref, onMounted, nextTick, watch } = Vue
 
+// Initialize Mermaid
+mermaid.initialize({ startOnLoad: false, theme: 'neutral' })
+
 const App = {
   setup() {
     const htmlContent = ref('Loading...')
@@ -97,7 +100,18 @@ const App = {
         htmlContent.value = marked.parse(markdown, { renderer })
 
         // Apply syntax highlighting and handle scrolling after DOM updates
-        nextTick(() => {
+        nextTick(async () => {
+          // Handle Mermaid diagrams
+          document.querySelectorAll('pre code.language-mermaid').forEach((block) => {
+            const pre = block.parentElement
+            const div = document.createElement('div')
+            div.className = 'mermaid'
+            div.textContent = block.textContent
+            pre.replaceWith(div)
+          })
+          await mermaid.run()
+
+          // Syntax highlighting for remaining code blocks
           document.querySelectorAll('pre code').forEach((block) => {
             hljs.highlightElement(block)
           })
