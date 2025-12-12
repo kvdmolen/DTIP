@@ -139,7 +139,7 @@ The approach of public credentials differs from the Eclipse Decentralized Claims
       "type": "CredentialRegistry",
       "serviceEndpoint": {
         "credentials": [
-          "eyJhbGciOiJFUzI1NiIsInR5cCI6InZjK3NkLWp3dCJ9.eyJpc3MiOiJkaWQ6d2ViOmNoYW1iZXItb2YtY29tbWVyY2UuZ292Lm5sIiwic3ViIjoiZGlkOndlYjphY21lLWxvZ2lzdGljcy5leGFtcGxlIiwidmN0IjoiT3JnYW5pemF0aW9uSWRlbnRpdHlDcmVkZW50aWFsIiwibGVnYWxOYW1lIjoiQWNtZSBMb2dpc3RpY3MgQi5WLiIsInJlZ2lzdHJhdGlvbk51bWJlciI6Ik5MOTg3NjU0MzIxIn0.signature"
+          "eyJhbGciOiJFUzI1NiIsIn...I6Ik5MOTg3NjU0MzIxIn0.signature"
         ]
       }
     },
