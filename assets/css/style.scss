@@ -1,0 +1,197 @@
+---
+---
+
+/* =========================
+   Override Cayman variables
+   ========================= */
+
+/* Headers */
+$header-heading-color: #fff;
+// $header-bg-color: #222; /* dark grey */
+// $header-bg-color-secondary: #111;
+
+/* Text */
+$section-headings-color: #333333;
+$body-text-color: #333333;
+$body-link-color: #1e6bb8;
+$blockquote-text-color: #555555;
+
+/* Code */
+$code-bg-color: #f3f6fa;
+$code-text-color: #30424a;
+
+/* Borders */
+$border-color: #dce6f0;
+$table-border-color: #e9ebec;
+$hr-border-color: #eff0f1;
+
+/* =========================
+   Import Cayman theme
+   ========================= */
+@import "{{ site.theme }}";
+
+/* =========================
+   Extra custom modern styling
+   ========================= */
+
+/* Google Fonts */
+// @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+body {
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif; //'Roboto', sans-serif;
+  color: $body-text-color;
+  background-color: #fff;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #222; /* dark grey headers */
+  font-weight: 600;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.main-content h1 {
+	font-size: 55px;
+	font-weight: 600;
+}
+
+.main-content h2 {
+	font-size: 40px;
+	font-weight: 600;
+}
+
+.main-content h3 {
+	font-size: 28px;
+	font-weight: 600;
+}
+
+.main-content h4 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+a {
+  color: $body-link-color;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Header bar */
+.page-header {
+  // background: $header-bg-color;
+  color: $header-heading-color;
+  padding: 2em 1em;
+  text-align: center;
+}
+
+.page-header h1 {
+  color: $header-heading-color;
+  margin: 0;
+  // margin-bottom: 0.2em;
+  font-weight: 700;
+}
+
+.page-header h2 {
+  color: $header-heading-color;
+  margin: 0;
+  margin-bottom: 70px;
+  font-weight: 500;
+  opacity: 1;
+}
+
+/* Navigation menu (top menu) */
+.top-menu a {
+  color: $header-heading-color;
+  margin: 0 12px;
+  font-weight: 500;
+  text-decoration: none;
+  font-size: 1.2em;
+}
+
+.top-menu a:hover {
+  text-decoration: underline;
+}
+
+/* Code blocks */
+pre, code {
+  background-color: $code-bg-color;
+  color: $code-text-color;
+  font-family: 'Roboto Mono', monospace;
+  border-radius: 5px;
+}
+
+pre {
+  padding: 1em;
+  overflow-x: auto;
+}
+
+/* Blockquotes */
+blockquote {
+  border-left: 4px solid $border-color;
+  padding: 15px;
+  // color: $blockquote-text-color;
+  margin: 1em 0;
+  background-color: #f9f9f9;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid $table-border-color;
+  margin-bottom: 1.5em;
+}
+
+th, td {
+	text-align: left;
+  border: 1px solid $table-border-color;
+  padding: 0.5em 1em;
+}
+
+th {
+  background-color: #f5f5f5;
+  font-weight: 500;
+}
+
+/* Horizontal rules */
+hr {
+  border: none;
+  border-top: 1px solid $hr-border-color;
+  margin: 2em 0;
+}
+
+/* Images */
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+/* Footer */
+.site-footer {
+  text-align: center;
+  font-size: 0.9em;
+  color: #999;
+  padding: 2em 1em;
+  border-top: 1px solid $border-color;
+}
+
+
+
+// .top-menu {
+// 	margin-top: 20px;
+// }
+
+// .top-menu a {
+// 	margin: 0 10px;
+// 	font-weight: bold;
+// 	color: white;
+// }
+
+// .top-menu a:hover {
+// 	text-decoration: underline;
+// }
