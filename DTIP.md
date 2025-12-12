@@ -1,8 +1,4 @@
----
-title: Home
-nav_order: 1
-has_children: false
----
+# Decentralized Trust Interop Profile (DTIP)
 
 **Version 0.7: Draft**
 
