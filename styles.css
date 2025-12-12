@@ -63,7 +63,7 @@ html, body {
   font-weight: 700;
   color: #555;
   cursor: pointer;
-  transition: color 0.15s ease;
+  transition: color 0.1s ease;
 }
 .site-header .page-menu-item:hover {
   color: #3aaaff;
@@ -100,7 +100,7 @@ html, body {
   padding: 24px 16px;
 }
 .toc-sidebar .toc-title {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -122,9 +122,9 @@ html, body {
   padding: 6px 12px;
   color: #000;
   text-decoration: none;
-  font-size: 0.875rem;
+  font-size: 1rem;
   border-radius: 4px;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: background-color 0.1s ease, color 0.1s ease;
 }
 .toc-sidebar .toc-item a:hover {
   background: rgba(0, 0, 0, 0.05);
@@ -146,7 +146,7 @@ html, body {
 
 .toc-sidebar .toc-item.toc-level-3 a {
   padding-left: 28px;
-  font-size: 0.8125rem;
+  font-size: 0.9rem;
   color: #555;
 }
 
