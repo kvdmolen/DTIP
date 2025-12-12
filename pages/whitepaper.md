@@ -22,6 +22,12 @@ However, all building blocks for a lightweight, decentralized trust infrastructu
 
 This document proposes exactly that: a base layer specifying how these existing standards should be applied for authentication, authorization, trust, delegation and communication in the context of a dataspace. The goal is not to invent something new, but to agree to a set of choices so organizations can adopt a common technical language.
 
+**Adopted Standards:** DTIP builds on established specifications rather than defining new ones:
+- [DIIP](https://fidescommunity.github.io/DIIP/) for credential formats (SD-JWT VC) and exchange protocols (OID4VCI, OID4VP)
+- [DCAT](https://www.w3.org/TR/vocab-dcat-3/) for data catalog and offering descriptions
+- [ODRL](https://www.w3.org/TR/odrl-model/) for usage policy expression
+- [DIDComm v2](https://identity.foundation/didcomm-messaging/spec/) for secure peer-to-peer messaging
+
 The profile is transport-agnostic, meaning it can sit on top of existing infrastructure. Organizations can adopt it incrementally, starting with basic DID authentication and adding capabilities as needed. Also the profile is agnostic about semantics, allowing any domain-specific roles or semantics.
 
 By agreeing on these fundamentals, we create a foundation for interoperability, and open a market for specialized tools, connectors, and services tailored to specific industries.
@@ -107,7 +113,7 @@ The DID Document can declare services in its `service` section. It's the basis o
 
 - **Public Credentials**. VCs that the holder chooses to set public for anyone to verify. Organizational identity from a business registry, membership in an industry association, compliance certifications. These credentials establish trustworthiness without requiring any interaction. A verifying party simply resolves the DID Document and checks the credentials.
 - **Messaging via DIDComm**. DIDComm provides secure, authenticated communication between two DIDs. Messages are end-to-end encrypted, with sender identity cryptographically verified. DIDComm may be used for contract negotiation, subscription notifications, event updates, and also credential issuance. The DID Document publishes the endpoint where messages should be sent.
-- **[Offerings](#glossary)**. The data products or services available at this DID. An offering specifies what is available (title, description, category), what access requirements apply (credentials needed, trust level), and how to access it (API endpoints, subscription channels). Publishing offerings in the DID Document enables discovery so other parties or "[discovery hubs](#glossary)" can see what's available without prior arrangement.
+- **[Offerings](#glossary)**. The data products or services available at this DID, described using [DCAT](https://www.w3.org/TR/vocab-dcat-3/) (Data Catalog Vocabulary). An offering specifies what is available (title, description, category), what access requirements apply (credentials needed, trust level), and how to access it (API endpoints, subscription channels). The DID Document references a DCAT catalog endpoint, enabling discovery so other parties or "[discovery hubs](#glossary)" can see what's available without prior arrangement.
 
 The approach of public credentials differs from the Eclipse Decentralized Claims Protocol (DCP). DCP requires sending VCs in a Verifiable Presentation for each and every transaction. That model does suit human-to-machine interactions, where selective disclosure of personal attributes matters and each transaction is typically one-time and focused on revealing specific claims. However, in business-to-business or machine-to-machine data sharing, the concerns differ: trust, organizational identity, and membership matter more than personal information, and relationships persist across many transactions. Public credentials are more practical, as verifiers may already have you whitelisted from a previous KYC check, making it unnecessary to continuously exchange the same organizational credentials. After initial trust verification, simple DID authentication might suffice.
 
@@ -145,32 +151,15 @@ The approach of public credentials differs from the Eclipse Decentralized Claims
       }
     },
     {
-      "id": "did:web:acme-logistics.example#offerings",
-      "type": "DataOfferings",
-      "serviceEndpoint": {
-        "offerings": [
-          {
-            "id": "did:web:acme-logistics.example#shipment-tracking",
-            "type": "DataOffering",
-            "title": "Shipment Tracking API",
-            "category": ["logistics", "tracking"],
-            "accessRequirements": { "minimumTrust": "whitelist" }
-          },
-          {
-            "id": "did:web:acme-logistics.example#capacity-data",
-            "type": "DataOffering",
-            "title": "Fleet Capacity Data",
-            "category": ["logistics", "capacity"],
-            "accessRequirements": { "credentialTypes": ["PartnerCredential"] }
-          }
-        ]
-      }
+      "id": "did:web:acme-logistics.example#catalog",
+      "type": "DataCatalog",
+      "serviceEndpoint": "https://acme-logistics.example/catalog.jsonld"
     }
   ]
 }
 ```
 
-This document shows an authentication key, a DIDComm messaging endpoint, a public organizational identity credential, and two data offerings with different access requirements.
+This document shows an authentication key, a DIDComm messaging endpoint, a public organizational identity credential, and a reference to a DCAT catalog describing available data offerings. The catalog endpoint serves a standard DCAT document (see [Specifications](/specifications) for details).
 
 ### 2.2 Verifiable Credentials (VCs)
 
@@ -178,11 +167,23 @@ A **Verifiable Credential** is a tamper-evident digital credential containing cl
 
 VCs may represent organizational identity from a government registry, membership in a trade association, a security certification, or an access-grant to a specific resource. The key property is verifiability: anyone can check that the credential was genuinely issued by the claimed issuer and has not been tampered with.
 
-Except for the Access-VC, this trust profile does not specify any other VC schemas or content structure. Different ecosystems use different formats: EBSI defines schemas for European identity credentials, Gaia-X specifies participant and compliance credentials, iSHARE defines its own delegation evidence format, and industry associations may define membership credentials. The profile should work with any of these. It's up to Service providers and connectors to support multiple credential schemes, allowing organizations to use credentials from whichever issuers are recognized in their context. What matters is that credentials are W3C-compliant VCs with verifiable signatures; specific claims and schemas are determined by the trust relationships each provider chooses to recognize.
+**Credential Format and Exchange:** DTIP adopts the [DIIP profile](https://fidescommunity.github.io/DIIP/) for credential format and exchange:
+
+| Aspect | Specification |
+|--------|---------------|
+| Format | SD-JWT VC (selective disclosure capable) |
+| Signature | ES256 (Secp256r1) |
+| Issuance | OID4VCI (OpenID for Verifiable Credential Issuance) |
+| Presentation | OID4VP (OpenID for Verifiable Presentations) |
+| Revocation | IETF Token Status List |
+
+This ensures interoperability with existing wallet implementations and credential infrastructure. Organizations already using OIDC can integrate credential exchange with minimal changes.
+
+Except for the Access Credential, this trust profile does not specify other VC schemas or content structure. Different ecosystems use different formats: EBSI defines schemas for European identity credentials, Gaia-X specifies participant and compliance credentials, iSHARE defines its own delegation evidence format, and industry associations may define membership credentials. The profile works with any of these. What matters is that credentials follow DIIP requirements; specific claims and schemas are determined by the trust relationships each provider chooses to recognize.
 
 **Revocation**
 
-VCs have expiration dates, but sometimes access must be terminated before expiration—when partnerships end, employees leave, or credentials are compromised. Standard VC revocation mechanisms handle this: issuers maintain revocation lists or status endpoints that verifiers check.
+VCs have expiration dates, but sometimes access must be terminated before expiration—when partnerships end, employees leave, or credentials are compromised. DTIP uses the IETF Token Status List for revocation, a compact and efficient mechanism where issuers publish status lists that verifiers can check.
 
 When verifying a credential chain, each credential's revocation status is checked. If any link in the chain has been revoked, the entire chain is invalid. This allows immediate termination of access rights at any level of the delegation hierarchy.
 
@@ -204,11 +205,11 @@ This is fast and requires no credential exchange. It works well when the questio
 
 ### 3.2 Controlled Access
 
-When resources require specific permissions—scoped to particular data, limited in time, or restricted to certain actions—providers issue **Access Credentials** (Access-VCs):
+When resources require specific permissions—scoped to particular data, limited in time, or restricted to certain actions—providers issue **Access Credentials**:
 
 ```json
 {
-  "type": ["VerifiableCredential", "DataAccessCredential"],
+  "type": ["VerifiableCredential", "AccessCredential"],
   "issuer": "did:web:rail-operator.example",
   "expirationDate": "2025-03-15T00:00:00Z",
   "credentialSubject": {
@@ -217,19 +218,40 @@ When resources require specific permissions—scoped to particular data, limited
     "actions": ["read", "write:status", "write:eta"],
     "delegatable": false
   },
-  "proof": { "...": "..." }
+  "credentialStatus": {
+    "type": "TokenStatusList",
+    "statusListCredential": "https://rail-operator.example/status/1",
+    "statusListIndex": "42"
+  }
 }
 ```
 
-This is the core of controlled access: who, what resource, which actions, until when, and whether delegation is allowed. The provider's authorization server verifies the Access-VC and issues a standard access token for the API—the same token format the API already expects.
+This is the core of controlled access: who, what resource, which actions, until when, and whether delegation is allowed. The provider's authorization server verifies the Access Credential and issues a standard access token for the API—the same token format the API already expects.
 
-**Using an Access-VC:** The consumer presents the Access-VC in a signed [Verifiable Presentation (VP)](#glossary). The provider verifies both the VP signature (proving DID ownership) and the Access-VC itself (valid issuer signature, not expired, resource matches, not revoked). Upon successful verification, the provider issues an access token, and API access proceeds normally.
+**Using an Access Credential:** Following the DIIP profile, the consumer presents the credential via OID4VP. The provider verifies the signature (proving DID ownership), checks expiration and revocation status, and confirms the resource matches. Upon successful verification, the provider issues an access token, and API access proceeds normally.
 
-**[Usage Policies](#glossary) (Optional):** Access-VCs can optionally include a `usagePolicy` field documenting additional constraints: permitted purposes, data retention expectations, geographic restrictions, or references to ODRL policies. These are *documentation*, not technical enforcement—the protocol cannot prevent a receiver from violating usage terms. What it does provide is an audit trail: the Access-VC documents what was agreed, and access logs show who accessed what. Enforcement remains a contractual and legal matter, as it realistically must be. Organizations needing formal policy negotiation can layer protocols like DSP on top, but for most B2B relationships, the business contract and mutual trust already cover these concerns.
+**[Usage Policies](#glossary) (Optional):** Access Credentials can optionally include a `policy` field referencing or embedding an [ODRL](https://www.w3.org/TR/odrl-model/) policy:
+
+```json
+{
+  "credentialSubject": {
+    "id": "did:web:logistics-partner.example",
+    "resource": "https://rail-operator.example/shipments/*",
+    "actions": ["read"],
+    "policy": {
+      "@context": "http://www.w3.org/ns/odrl.jsonld",
+      "@type": "Agreement",
+      "permission": [{ "action": "use", "constraint": [{ "leftOperand": "purpose", "operator": "eq", "rightOperand": "logistics-optimization" }] }]
+    }
+  }
+}
+```
+
+These policies are *documentation*, not technical enforcement—the protocol cannot prevent a receiver from violating usage terms. What it does provide is an audit trail: the credential documents what was agreed, and access logs show who accessed what. Enforcement remains a contractual and legal matter. Organizations needing formal policy negotiation can layer protocols like DSP Contract Negotiation on top, but for most B2B relationships, the business contract and mutual trust already cover these concerns.
 
 ### 3.3 Delegated Access ([Delegation Chain](#glossary))
 
-Organizations holding an Access-VC can delegate access to partners, subcontractors, or automated systems by issuing a new credential that references the original. This creates a **[delegation chain](#glossary)**—a sequence of credentials transferring access rights from party to party, with each link referencing its parent.
+Organizations holding an Access Credential can delegate access to partners, subcontractors, or automated systems by issuing a new credential that embeds the original. This creates a **[delegation chain](#glossary)**—a sequence of credentials transferring access rights from party to party, with each link embedding its parent in SD-JWT compact form.
 
 **Example: Multimodal Freight**
 
@@ -374,16 +396,16 @@ Event-driven collaboration enables workflows that would be impractical with poll
 
 ## 7. Comparison with Existing Frameworks
 
-| Capability | iSHARE | Gaia-X | DSP/DCP | **This Protocol** |
-|------------|--------|--------|---------|-------------------|
+| Capability | iSHARE | Gaia-X | DSP/DCP | **DTIP** |
+|------------|--------|--------|---------|----------|
 | **Minimum onboarding** | Legal agreement + certificates | Certification | Connector + VP | Generate DID |
-| **Authentication** | OAuth + certificates | Compliance check | VP with identity VCs | DID signature |
+| **Authentication** | OAuth + certificates | Compliance check | VP with identity VCs | DID + OID4VP (DIIP) |
 | **Trust establishment** | Scheme membership | Gaia-X credentials | VP with identity VCs | Public credentials |
-| **Access grants** | Delegation evidence | Service offerings | Contract agreement | Access-VC |
-| **Usage policies** | Contract terms | Policy rules | ODRL policies | Optional (documentation) |
-| **Delegation** | Limited | Not standardized | Transfer protocol | VC chaining |
-| **Discovery** | Satellite registry | Federated catalogs | Catalog protocol | Discovery hubs |
-| **Notifications** | External | Not specified | External | DIDComm |
+| **Access grants** | Delegation evidence | Service offerings | Contract agreement | Access Credential |
+| **Usage policies** | Contract terms | Policy rules | ODRL policies | ODRL (optional) |
+| **Delegation** | Limited | Not standardized | Transfer protocol | Embedded VC chaining |
+| **Discovery** | Satellite registry | Federated catalogs | Catalog protocol | DCAT + Discovery hubs |
+| **Notifications** | External | Not specified | External | DIDComm v2 |
 
 ### Positioning
 
@@ -419,16 +441,17 @@ Each phase adds value independently. Organizations start where they are and add 
 
 This proposal defines a base trust protocol for data collaboration:
 
-| Requirement | Approach | Benefit |
-|-------------|----------|---------|
-| Authentication | DID ownership proof | No passwords or certificates |
-| Trust establishment | Public credentials + trust chains | Verify unknown parties |
-| Access authorization | Access-VCs | Fine-grained, auditable |
-| Delegation | VC chaining | Partners delegate independently |
-| Usage documentation | Optional policies in Access-VCs | Audit trail for compliance |
-| Audit | Decentralized logging of credential chains | Non-repudiable access records |
-| Discovery | Offerings + hubs | Find data without central registry |
-| Collaboration | DIDComm notifications | React to changes in real-time |
+| Requirement | Approach | Standard |
+|-------------|----------|----------|
+| Credential format | SD-JWT VC | DIIP |
+| Credential exchange | OID4VCI / OID4VP | DIIP |
+| Authentication | DID ownership proof | did:web, did:jwk |
+| Trust establishment | Public credentials + trust chains | W3C VC |
+| Access authorization | Access Credentials | DTIP schema |
+| Delegation | Embedded VC chaining | DTIP schema |
+| Usage policies | ODRL policies (optional) | W3C ODRL |
+| Discovery | Data catalogs + hubs | W3C DCAT |
+| Messaging | Encrypted notifications | DIDComm v2 |
 
 The protocol provides what digital collaboration requires: trust, authorization, delegation, discovery, and coordination—without prescribing data formats, transfer protocols, or governance structures. Contract negotiation and detailed policy enforcement can be layered on top as needed.
 
@@ -447,17 +470,16 @@ The technologies already exist. By agreeing on how to apply them, we establish a
 | **Identifier** | A DID proving control of a key pair; not identity |
 | **Identity** | Verified attributes in VCs from trusted issuers |
 | **DID** | Decentralized Identifier resolving to a DID Document |
-| **DID Document** | Public keys, services, credentials, and offerings for a DID |
-| **VC** | Verifiable Credential — signed, tamper-evident claim |
-| **VP** | Verifiable Presentation — signed package of VCs |
-| **Access-VC** | Credential granting specific data access rights |
-| **Delegation-VC** | Credential transferring access rights to another DID |
-| **Usage Policy** | Optional documentation of constraints (purpose, retention, sharing) for audit purposes |
-| **Offering** | Description of a data product or service available from a DID |
-| **Discovery Hub** | Service indexing offerings across multiple DIDs |
-| **DIDComm** | Secure messaging protocol using DIDs |
-| **Trust Chain** | Credential sequence linking unknown party to trusted root via public credentials in DID Documents; establishes identity and trustworthiness |
-| **Delegation Chain** | Credential sequence transferring access rights via Access-VCs and Delegation-VCs; grants resource permissions |
+| **DID Document** | Public keys, services, credentials, and catalog reference for a DID |
+| **VC** | Verifiable Credential — signed, tamper-evident claim (SD-JWT VC per DIIP) |
+| **VP** | Verifiable Presentation — signed credential presentation via OID4VP |
+| **Access Credential** | Credential granting specific data access rights; supports delegation via embedded parent |
+| **ODRL Policy** | W3C standard for expressing usage constraints (optional, documentation only) |
+| **Offering** | Description of a data product or service, expressed in DCAT format |
+| **Discovery Hub** | Service indexing DCAT catalogs across multiple DIDs |
+| **DIDComm** | DIDComm v2 secure messaging protocol using DIDs |
+| **Trust Chain** | Credential sequence linking unknown party to trusted root via public credentials; establishes identity |
+| **Delegation Chain** | Credential sequence transferring access rights via embedded Access Credentials; grants resource permissions |
 
 ---
 
@@ -468,9 +490,9 @@ The technologies already exist. By agreeing on how to apply them, we establish a
 
 The protocol uses two distinct types of credential chains for different purposes:
 
-**Delegation Chains** transfer specific access rights. When an organization delegates access to a partner, it issues a new VC that references the original Access-VC. The partner can further delegate by issuing another VC referencing theirs. Each link grants a subset of the parent's permissions. The chain terminates at an Access-VC originally issued by the data owner. See Section 3.3 for details.
+**Delegation Chains** transfer specific access rights. When an organization delegates access to a partner, it issues a new Access Credential that embeds the original (in SD-JWT compact form) in the `parentCredential` field. The partner can further delegate by issuing another credential embedding theirs. Each link grants a subset of the parent's permissions. The chain terminates at an Access Credential originally issued by the data owner. See Section 3.3 for details.
 
-Delegation chains create a built-in audit trail. When a party presents credentials for access, the full chain is visible—showing who originally granted access, through whom it was delegated, and under what constraints at each step. Data providers log this information with each access request, creating a decentralized audit trail where each organization maintains records of who accessed their resources and through what authorization path.
+Delegation chains create a built-in audit trail. When a party presents credentials for access, the full embedded chain is visible—showing who originally granted access, through whom it was delegated, and under what constraints at each step. Data providers log this information with each access request, creating a decentralized audit trail where each organization maintains records of who accessed their resources and through what authorization path.
 
 **Trust Chains** establish identity and trustworthiness. These work through public credentials published in DID Documents. A provider may not directly recognize an unknown party's credentials, but can verify trust transitively by resolving issuer DID Documents and following credential signatures up to trusted root authorities (e.g., Gaia-X → European Commission). See Section 4.3 for details.
 
