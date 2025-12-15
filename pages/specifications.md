@@ -119,6 +119,49 @@ HM6Ly9kYXRhLW93bmVyLmV4YW1wbGUvYXBpL3NoaXBtZW50cy8qIiwiYWN0aW9ucyI
 | `credentialSubject.delegatable` | Whether further delegation is allowed (default: `false`) |
 | `credentialSubject.policy` | ODRL policy reference (see Section 3) |
 
+### 2.6 Resource-Specific Access Credentials
+
+When an Access Credential grants access to a specific data type (e.g., an eCMR), both the holder and verifier need to know what kind of data it provides access to. This is achieved by adding a domain-specific type to the `type` array:
+
+```json
+{
+  "type": ["VerifiableCredential", "AccessCredential", "eCMRAccessCredential"],
+  "credentialSubject": {
+    "id": "did:web:driver.example",
+    "resource": "https://carrier.example/api/ecmr/12345",
+    "actions": ["read"]
+  }
+}
+```
+
+This pattern:
+- Allows wallets to organize and filter credentials by data type
+- Enables verifiers to request specific credential types via OID4VP
+- Follows standard W3C VC conventions for type extensibility
+
+**OID4VP Request Example:**
+
+When customs requests an eCMR access credential from a driver's wallet:
+
+```json
+{
+  "presentation_definition": {
+    "id": "ecmr-access-request",
+    "input_descriptors": [{
+      "id": "ecmr-credential",
+      "constraints": {
+        "fields": [{
+          "path": ["$.type"],
+          "filter": { "contains": { "const": "eCMRAccessCredential" } }
+        }]
+      }
+    }]
+  }
+}
+```
+
+The wallet finds matching credentials and presents them. The verifier confirms the credential grants access to the requested resource.
+
 ---
 
 ## 3. Delegated Access

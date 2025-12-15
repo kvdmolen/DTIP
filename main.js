@@ -27,7 +27,6 @@ const template = `
         {{ page.label }}
       </button>
     </nav>
-    <span class="version-badge">Draft v0.7</span>
   </header>
 
   <div class="main-container">

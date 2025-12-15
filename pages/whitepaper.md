@@ -215,7 +215,7 @@ When resources require specific permissions—scoped to particular data, limited
 }
 ```
 
-This is the core of controlled access: who, what resource, which actions, until when, and whether delegation is allowed. The provider's authorization server verifies the Access Credential and issues a standard access token for the API—the same token format the API already expects.
+This is the core of controlled access: who, what resource, which actions, until when, and whether delegation is allowed. When the credential grants access to a specific data type (e.g., an eCMR), a domain-specific type can be added to the `type` array: `["VerifiableCredential", "AccessCredential", "eCMRAccessCredential"]`. This enables verifiers to request specific credential types via OID4VP—for example, customs can request "an eCMRAccessCredential" from a driver's wallet. The provider's authorization server verifies the Access Credential and issues a standard access token for the API—the same token format the API already expects.
 
 **Using an Access Credential:** Following the DIIP profile, the consumer presents the credential via OID4VP. The provider verifies the signature (proving DID ownership), checks expiration and revocation status, and confirms the resource matches. Upon successful verification, the provider issues an access token, and API access proceeds normally.
 
