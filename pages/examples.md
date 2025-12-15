@@ -204,6 +204,57 @@ Delegation-VCs should have short expiration times and can be revoked by the dele
 
 ---
 
+## Example 3b: eCMR Access at the Border
+
+```mermaid
+sequenceDiagram
+    participant Carrier as 🚛 Transport Operator
+    participant Driver as 👤 Driver (wallet)
+    participant Customs as 🏛️ Customs Officer
+    participant eCMR as 📄 eCMR Platform
+
+    Note over Carrier,eCMR: Preparation (before journey)
+    Carrier->>eCMR: Creates eCMR for shipment
+    eCMR-->>Carrier: Issues eCMRAccessCredential
+    Carrier->>Driver: Delegates eCMRAccessCredential
+
+    Note over Driver,Customs: At the border
+    Customs->>Driver: Shows QR code (credential request)
+    Driver->>Driver: Wallet scans QR
+    Driver->>Customs: Presents eCMRAccessCredential (VP)
+
+    Note over Customs,eCMR: Verification & access
+    Customs->>Customs: Verifies credential chain
+    Customs->>eCMR: Fetches eCMR using credential
+    eCMR-->>Customs: Returns shipment documents
+    Customs->>Driver: ✓ Cleared
+```
+
+### Scenario
+
+A transport operator has an electronic consignment note (eCMR) for a shipment on an eCMR platform. The driver needs to present proof of the shipment at customs. The customs officer doesn't have a relationship with the transport operator or access to the eCMR platform—but can still verify and access the documents.
+
+### How It Works
+
+**1. Preparation:** The transport operator creates the eCMR on a platform. The platform issues an `eCMRAccessCredential` to the operator. The operator delegates this credential to the driver's mobile wallet, scoped to read-only access for this specific shipment.
+
+**2. At the border:** The customs officer displays a QR code containing an OID4VP request: "Present an eCMRAccessCredential." The driver's wallet scans the QR, finds matching credentials, and presents them.
+
+**3. Verification:** Customs verifies the credential chain—the driver's credential was issued by the transport operator, whose credential was issued by the eCMR platform. The chain is valid. Customs uses the credential to fetch the actual eCMR documents from the platform.
+
+### Why This Matters
+
+| Traditional Approach | With DTIP |
+|---------------------|-----------|
+| Paper CMR documents that can be forged | Cryptographically verifiable credentials |
+| Customs needs accounts on every eCMR platform | Customs verifies credentials, accesses any platform |
+| Driver carries sensitive company credentials | Driver has scoped, time-limited delegation |
+| No audit trail of who accessed what | Full chain visible: platform → operator → driver → customs |
+
+The driver never has direct access to company systems—only a delegated credential for this specific shipment. If the driver leaves employment, the operator simply revokes the delegation. The customs officer doesn't need to be onboarded to any system—they verify the credential chain and use it to access the data.
+
+---
+
 ## Example 4: Unknown Party with Trust Chain Verification (Trust Chains)
 
 ```mermaid

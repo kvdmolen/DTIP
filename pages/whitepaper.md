@@ -4,53 +4,43 @@
 
 ---
 
-## Executive Summary
-
-The **Decentralized Trust Interop Profile (DTIP)** is a lightweight technical profile that acts as a base layer for trust in digital data exchange. Unlike existing dataspace initiatives, DTIP ensures that every party retains full autonomy over its own trust decisions. This means there are no participants, nor is there centralized onboarding. It specifies a cohesive set of open standards that ensure interoperability across identity, trust, access, delegation, and peer-to-peer communication. DTIP is designed to operate on top of existing infrastructure, and domain-specific semantics, industry standards, or rules for participation may be plotted on top. It aims to complement dataspace initiatives such as Gaia-X, iSHARE, and the Data Space Protocol (DSP), and will work alongside eIDAS 2.0.
-
-In DTIP, organizations, individuals, teams, or "things" are identified by a DID. The corresponding **public** DID Document serves as a foundational anchor: it contains public verifiable credentials, available service endpoints, and other relevant public metadata about the subject. Access to actual data-endpoints is granted by issuing a dedicated Access Credential, with embeded the conditions for access. These credentials may also be delegated, to partners or subcontractors, building a verifiable audit trail while doing so. Trust is established per party, by assessment of public credentials. Public credentials may include memberships, identities, declarations, or compliance credentials such as those from Gaia-X. Trust may be stored as a whitelisted DID for faster future data-exchange.
-
----
-
 ## Abstract
 
-European programmes like DSSC and DSIC have made digital collaboration across organizations a strategic priority. Current initiatives such as Gaia-X, iSHARE, and the Eclipse Dataspace Protocol aim to achieve this through governance models, compliance requirements, and specialized infrastructure. While valuable, these initiatives often couple trust mechanisms tightly with governance overhead, leaving a high barrier for participation and onboarding.
+The **Decentralized Trust Interop Profile (DTIP)** is a lightweight technical profile that acts as a base layer for trust in digital data exchange. Unlike existing dataspace initiatives, DTIP ensures that every party retains full autonomy over its own trust decisions. This means there are no participants, nor is there centralized onboarding. It specifies a cohesive set of open standards that ensure interoperability across identity, trust, access, delegation, and peer-to-peer notifications. DTIP is designed to operate on top of existing infrastructure, and any domain-specific semantics, industry standards, or rules for participation may be plotted on top. It aims to complement dataspace initiatives such as Gaia-X, iSHARE, and the Data Space Protocol (DSP), and to also support human to machine interactions conforming to eIDAS 2.0.
 
-A shared limitation is that even when two organizations already trust each other, they cannot exchange data directly without going through the dataspace infrastructure. The technical footprint for adoption is substantial with a high integration effort, and the introduction of new standards
-
-However, all building blocks for a lightweight, decentralized trust infrastructure already exist: the W3C Decentralized Identifiers (DIDs), Verifiable Credentials (VCs), and [DIDComm](#glossary) messages. What's missing is agreement on how to combine them into a coherent base layer for digital collaboration.
-
-This document proposes exactly that: a base layer specifying how these existing standards should be applied for authentication, authorization, trust, delegation and communication in the context of a dataspace. The goal is not to invent something new, but to agree to a set of choices so organizations can adopt a common technical language.
-
-**Adopted Standards:** DTIP builds on established specifications rather than defining new ones:
-- [DIIP](https://fidescommunity.github.io/DIIP/) for credential formats (SD-JWT VC) and exchange protocols (OID4VCI, OID4VP)
-- [DCAT](https://www.w3.org/TR/vocab-dcat-3/) for data catalog and offering descriptions
-- [ODRL](https://www.w3.org/TR/odrl-model/) for usage policy expression
-- [DIDComm v2](https://identity.foundation/didcomm-messaging/spec/) for secure peer-to-peer messaging
-
-The profile is transport-agnostic, meaning it can sit on top of existing infrastructure. Organizations can adopt it incrementally, starting with basic DID authentication and adding capabilities as needed. Also the profile is agnostic about semantics, allowing any domain-specific roles or semantics.
-
-By agreeing on these fundamentals, we create a foundation for interoperability, and open a market for specialized tools, connectors, and services tailored to specific industries.
+In DTIP, organizations, individuals, teams, or even devices or trucks are identified by a DID. The corresponding **public** DID Document serves as a foundational anchor: it contains public verifiable credentials, available service endpoints, and other relevant public metadata about the subject. Access to actual data-endpoints is granted by issuing a dedicated Access Credential, with embeded the conditions for access. These credentials may also be delegated to partners or subcontractors, building a verifiable audit trail while doing so. Trust is established individually by assessment of the public credentials. Those may include memberships, identities, declarations, or compliance statements such as the Gaia-X credential. Trust may be stored as a whitelisted DID for faster future data-exchange.
 
 ---
 
 ## 1. Introduction
 
-Digital collaboration requires solving several interrelated problems: identity verification, access authorization, credential exchange, and real-time coordination. Current frameworks tend to bundle these concerns together with governance requirements, creating packages that must be adopted wholesale or not at all.
+European programmes like DSSC and DSIC have made digital collaboration across organizations a strategic priority. Current initiatives such as Gaia-X, iSHARE, and the Eclipse Dataspace Protocol aim to achieve this through governance models, compliance requirements, and specialized infrastructure. While valuable, these initiatives often couple trust mechanisms tightly with governance overhead, leaving a high barrier for participation and onboarding.
 
-This proposal inverts that pitfall: an incremental trust protocol scaling from informal partnerships to heavily regulated industries, without forcing a one-size-fits-all framework. It fulfills the technical requirements of a dataspace such as identity, trust, authorization and interoperability, but without prescribing governance. Organizations can start with what they have and adopt capabilities incrementally. Also, existing protcols like the DSP Contract Negotiation protocol, can easily be layered on top, where DIDComm could serve as the secure transport for such negotiations. But it remains optional, as also many scenarios may work fine with direct but trusted access.
+A shared limitation is that even when two organizations already trust each other, they cannot exchange data directly without going through the dataspace infrastructure and onboarding. The technical footprint for adoption is relatively substantial with a high integration effort, and the introduction of new standards
 
-The underlying technologies are mature. DIDs, Verifiable Credentials, and DIDComm have W3C specifications, multiple implementations, downloadable tools, and growing adoption. What's lacking is consensus on how to apply them in dataspace contexts.
+However, all building blocks for a lightweight, decentralized trust infrastructure already exist: the W3C [Decentralized Identifiers](#glossary) (DIDs), [Verifiable Credentials](#glossary) (VCs), and [DIDComm](#glossary) messages. What's missing is agreement on how to combine them into a coherent base layer for digital collaboration.
+
+This whitepaper proposes exactly that: a base layer specifying how these existing standards should be applied for authentication, authorization, trust, delegation and communication, in the context of a dataspace. The goal is not to invent something new, but to agree to a set of choices so organizations can adopt a common technical language. An incremental trust protocol scaling from informal partnerships to heavily regulated industries, without forcing a one-size-fits-all framework. It fulfills the technical requirements of a dataspace such as identity, trust, authorization and interoperability, but without prescribing governance. Organizations can start with what they have and adopt capabilities incrementally. Also, existing protcols like the DSP Contract Negotiation protocol, can easily be layered on top, where DIDComm could serve as the secure transport for such negotiations. But it remains optional, as also many scenarios may work fine with direct but trusted access.
+
+The underlying technologies are mature. DIDs, Verifiable Credentials, and DIDComm all have W3C specifications, multiple implementations, downloadable tools, and growing adoption. What's lacking is consensus on how to apply them in dataspace contexts.
+
+DTIP builds on established specifications rather than defining new ones:
+- [DIIP](https://fidescommunity.github.io/DIIP/) for credential formats (SD-JWT VC) and exchange protocols (OID4VCI, OID4VP)
+- [DCAT](https://www.w3.org/TR/vocab-dcat-3/) for data catalog and offering descriptions
+- [ODRL](https://www.w3.org/TR/odrl-model/) for usage policy expression
+- [DIDComm v2](https://identity.foundation/didcomm-messaging/spec/) for secure peer-to-peer messaging
+
+The profile is agnostic about data-transport, meaning it can sit on top of existing infrastructure. Adoption may be incremental, starting with basic DID authentication for known parties, and adding capabilities as needed. Also the profile is agnostic about semantics, allowing any domain-specific roles or semantics being added on top.
 
 ### 1.1 Foundational Premise
 
 The profile operates on a foundational premise:
 
-> **Each participant retains full autonomy over their own trust decisions.**
+> **Each participant retains full autonomy over their own trust decisions: Self-Sovereign Trust**
 
 It has 6 core principles:
 
-1. **No Central Authority** — Trust is peer-to-peer. Each data provider defines its own access policies without mandatory scheme operators.
+1. **No Central Authority** — DTIP is merely a set of minimal technical specifications.
 
 2. **Progressive Trust** — Start with minimal proof (DID ownership), escalate to credentials only when the resource requires it.
 
@@ -60,64 +50,69 @@ It has 6 core principles:
 
 5. **Transport Agnostic** — The trust protocol handles authorization, not data transfer. Use any API or transport.
 
-6. **Incremental Adoption** — Start simple, add capabilities as requirements grow.
+6. **Incremental Adoption** — The fundamental basis is the DID. Only that will already allow secure and trusted data exchange between known parties. The
 
 ### 1.2 Market Opportunities
 
-Agreeing on a common trust layer will create significant opportunities for service providers and tool builders. Because the profile defines interfaces rather than implementations, organizations need software or SaaS services to participate. And as different industries have different needs, many parallell platforms and tools will arise.
+Agreeing on a common trust layer will create significant market opportunities for specialized tools, connectors, and services tailored to specific industries. Organizations will still need software packages or SaaS services to become part of the network. And as different industries have different needs, a variety of platforms, tools and services will arise, sometimes with domain-specific features:
 
-- Connector providers can build integrations bridging these standards with existing platforms like ERPs and logistics systems, competing on ease of integration and domain-specific features while maintaining interoperability.
-- Trust service providers help organizations establish verifiable identity through credential issuance—chambers of commerce, compliance firms, and certification bodies all have roles to play.
-- Discovery hubs index offerings across the network, with opportunities for industry-specific, regional, or compliance-focused services.
-- Domain-specific tooling addresses vertical needs, since healthcare data sharing requires different features than logistics tracking or manufacturing supply chains.
-
-This mirrors the web: open standards enable competition and specialization while interoperability prevents lock-in.
+- **Connectors** for interfacing with existing platforms like ERPs and logistics systems.
+- **Trust Services** to help organizations assess trust.
+- **Discovery Hubs** to index offerings across the network.
 
 ---
 
 ## 2. Technical Foundation
 
-Two concepts form the backbone:
+The backbone of DTIP are two common, W3C standardized concepts:
 
-- **Decentralized Identifiers ([DID](#glossary))**
-- **Verifiable Credentials ([VC](#glossary))**
+- **Decentralized Identifiers**
+- **Verifiable Credentials**
 
-Understanding their distinct roles, and the difference between an **identifier** and an **identity** is essential:
+Understanding the difference between an **identifier** and an **identity** is essential:
 
-- The DID provides a unique **identifier**. It says nothing about who or what that identifier actually is. Think of it as an empty wallet.
-- The VC provides the **identity**: a verifiable proof of a legal name, registration number, certification or membership, issued by recognized parties. It's the card inside the wallet.
+- An **identifier** is a unique string. Think of it as an empty wallet.
+- An **identity** is a statement of who you are. It's the card inside the wallet.
 
-Note that a VC is **bound** to a DID, meaning that a VC is always issued to one specific DID.
+The DID provides the **identifier**, with the added value that one can prove the ownership of that identifier through a cryptographic signature.
 
-### 2.1 Decentralized Identifiers (DIDs)
+The VC provides the **identity**: a specific claim by some trusted party about some subject. VCs may represent organizational identity from a government registry, membership in a trade association, a statement from the Chamber of Commerce, a security certification, or an access-grant to a specific resource. The key property is verifiability: anyone can check that the credential was genuinely issued by the claimed issuer and has not been tampered with.
 
-So a **DID** is a globally unique identifier, represented by a simple string. It resolves to a **DID Document**. DIDs are not controlled by any central authority. They are anchored through various methods, on web domains (`did:web`), derived purely from cryptographic keys (`did:key`), or registered on distributed ledgers.
+DTIP adopts the [DIIP profile](https://fidescommunity.github.io/DIIP/) for credential format and exchange.
 
-At its core, a DID represents a public/private key pair. The public DID Document contains the corresponding public key, and the holder possesses the private key. Anyone can verify that a message or signature came from the DID holder by checking it against the public key, without needing to contact any authority.
+The VC is always issued to a DID, and therefore they are bound. To prove the VC is yours, you need to prove ownership of the DID. Therefore a VC is safe to publish on the web as no one else can prove ownership. Where an OAuth token is always short-lived as it directly provides access, the VC is long-lived.
 
-Every participant—whether an organization, a service endpoint, a device, or an automated agent, is identified by a DID. The specific method is not prescribed; participants choose what suits their security and operational requirements.
+### 2.1 DID-Based Authentication
 
-An exception is the iSHARE custom DID method `did:ishare`, which embeds a claim directly in the identifier. This deviates from the standard model where the identifier is purely cryptographic, and claims are carried separately in a VC.
+Only with the DID, one could already login. Because a DID is essentially a cryptographic public/private key pair, it by itself enables authentication by signing a given challenge (called a "nonce"). This mechanism is the basis for all interactions. Even when VCs are involved, the presenting party must always prove they control the DID to which the credentials were issued.
 
-#### 2.1.1 DID-Based Authentication
+**SIOP (Self-Issued OpenID Provider)** is the adopted standard that formalizes this pattern, allowing DID-based authentication to integrate with existing OpenID Connect infrastructure. Organizations already using OIDC can adopt DID authentication with minimal changes.
 
-Because a DID is bound to a cryptographic key pair, it enables simple challenge-response authentication. Some service issues a random string (called a "nonce"), the client signs that with their DID's private key, and now the service can verify that signature against the public key in the DID Document. This proves control of the DID without passwords, without certificates, and without any exchange of verifiable credentials.
+### 2.2 DID Document
 
-This mechanism underlies all interactions. Even when VCs are involved, the presenting party must always prove they control the DID to which the credentials were issued.
+A DID resolves to a public **DID Document**. That public DID Document contains the public key, while the holder possesses the private key. Anyone can verify that a message or signature came from the DID holder by checking it against the public key, without needing to contact any authority.
 
-**SIOP (Self-Issued OpenID Provider)** is an adopted standard that formalizes this pattern, allowing DID-based authentication to integrate with existing OpenID Connect infrastructure. Organizations already using OIDC can adopt DID authentication with minimal changes.
+**Services in the DID Document**
 
-#### 2.1.2 Services in the DID Document
+The DID Document can declare services in its `service` section. It's the basis of the trust profile, and DTIP uses three service types:
 
-The DID Document can declare services in its `service` section. It's the basis of the trust profile, and it uses three service types:
+- **Public Credentials**. VCs that the holder chooses to set public for anyone to verify.
+- **Offerings**. The data products or services available at this DID, described using [DCAT](https://www.w3.org/TR/vocab-dcat-3/)
+- **DIDComm Endpoints**. [DIDComm](#2.4DIDComm) provides secure, authenticated communication between two DIDs.
 
-- **Public Credentials**. VCs that the holder chooses to set public for anyone to verify. Organizational identity from a business registry, membership in an industry association, compliance certifications. These credentials establish trustworthiness without requiring any interaction. A verifying party simply resolves the DID Document and checks the credentials.
-- **Messaging via DIDComm**. DIDComm provides secure, authenticated communication between two DIDs. Messages are end-to-end encrypted, with sender identity cryptographically verified. DIDComm may be used for contract negotiation, subscription notifications, event updates, and also credential issuance. The DID Document publishes the endpoint where messages should be sent.
-- **[Offerings](#glossary)**. The data products or services available at this DID, described using [DCAT](https://www.w3.org/TR/vocab-dcat-3/) (Data Catalog Vocabulary). An offering specifies what is available (title, description, category), what access requirements apply (credentials needed, trust level), and how to access it (API endpoints, subscription channels). The DID Document references a DCAT catalog endpoint, enabling discovery so other parties or "[discovery hubs](#glossary)" can see what's available without prior arrangement.
+### 2.3 VC Revocation
 
-The approach of public credentials differs from the Eclipse Decentralized Claims Protocol (DCP). DCP requires sending VCs in a Verifiable Presentation for each and every transaction. That model does suit human-to-machine interactions, where selective disclosure of personal attributes matters and each transaction is typically one-time and focused on revealing specific claims. However, in business-to-business or machine-to-machine data sharing, the concerns differ: trust, organizational identity, and membership matter more than personal information, and relationships persist across many transactions. Public credentials are more practical, as verifiers may already have you whitelisted from a previous KYC check, making it unnecessary to continuously exchange the same organizational credentials. After initial trust verification, simple DID authentication might suffice.
+VCs have expiration dates, but sometimes access must be terminated before expiration—when partnerships end, employees leave, or credentials are compromised. DTIP uses the IETF Token Status List for revocation, a compact and efficient mechanism where issuers publish status lists that verifiers can check.
 
-#### 2.1.3 Example DID Document
+When verifying a credential chain, each credential's revocation status is checked. If any link in the chain has been revoked, the entire chain is invalid. This allows immediate termination of access rights at any level of the delegation hierarchy.
+
+### 2.4 DIDComm
+
+DIDComm is a peer-to-peer messaging system, based on webhooks specified in the DID Document. Messages are end-to-end encrypted, with sender identity cryptographically verified. DIDComm may be used for notifications, event updates, contract negotiation, and also for issuance of credentials when the receiving party is known by DID.
+
+### 2.5 Examples
+
+Below is a DID Document presenting an authentication key, a DIDComm messaging endpoint, a public organizational identity credential (in SD-JWT compact form), and a reference to a DCAT catalog:
 
 ```json
 {
@@ -152,97 +147,54 @@ The approach of public credentials differs from the Eclipse Decentralized Claims
 }
 ```
 
-This document shows an authentication key, a DIDComm messaging endpoint, a public organizational identity credential (in SD-JWT compact form), and a reference to a DCAT catalog. The JWT decodes to claims including `iss` (issuer), `sub` (subject DID), `vct` (credential type), and the organization's legal name and registration number.
+Below an example of a verifiable credential representing an organizational identity:
 
-### 2.2 Verifiable Credentials (VCs)
+```json
+{
+  "type": ["VerifiableCredential", "verifiableChamberOfCommerce"],
+}
+```
 
-A **Verifiable Credential** is a tamper-evident digital credential containing claims about a subject, signed by an issuer. The structure includes the issuer's DID, the subject's DID, the claims being made, and cryptographic proof (a signature).
+### 2.6 Note on other dataspace initiatives
 
-VCs may represent organizational identity from a government registry, membership in a trade association, a security certification, or an access-grant to a specific resource. The key property is verifiability: anyone can check that the credential was genuinely issued by the claimed issuer and has not been tampered with.
+The iSHARE custom DID method `did:ishare` embeds a claim directly in the identifier. This deviates from the standard model where the identifier is purely cryptographic, and claims are carried separately in a VC.
 
-**Credential Format and Exchange:** DTIP adopts the [DIIP profile](https://fidescommunity.github.io/DIIP/) for credential format and exchange:
-
-| Aspect | Specification |
-|--------|---------------|
-| Format | SD-JWT VC (selective disclosure capable) |
-| Signature | ES256 (Secp256r1) |
-| Issuance | OID4VCI (OpenID for Verifiable Credential Issuance) |
-| Presentation | OID4VP (OpenID for Verifiable Presentations) |
-| Revocation | IETF Token Status List |
-
-This ensures interoperability with existing wallet implementations and credential infrastructure. Organizations already using OIDC can integrate credential exchange with minimal changes.
-
-Except for the Access Credential, this trust profile does not specify other VC schemas or content structure. Different ecosystems use different formats: EBSI defines schemas for European identity credentials, Gaia-X specifies participant and compliance credentials, iSHARE defines its own delegation evidence format, and industry associations may define membership credentials. The profile works with any of these. What matters is that credentials follow DIIP requirements; specific claims and schemas are determined by the trust relationships each provider chooses to recognize.
-
-**Revocation**
-
-VCs have expiration dates, but sometimes access must be terminated before expiration—when partnerships end, employees leave, or credentials are compromised. DTIP uses the IETF Token Status List for revocation, a compact and efficient mechanism where issuers publish status lists that verifiers can check.
-
-When verifying a credential chain, each credential's revocation status is checked. If any link in the chain has been revoked, the entire chain is invalid. This allows immediate termination of access rights at any level of the delegation hierarchy.
+The Eclipse Decentralized Claims Protocol (DCP) requires sending VCs in a Verifiable Presentation for each transaction. That model suits human-to-machine interactions where each transaction is typically one-off. However, in business-to-business and machine-to-machine interactions, the concerns differ: relationships persist across many transactions. Verifiers may already have you whitelisted from a previous KYC check, making it unnecessary to continuously exchange the same organizational credentials. After initial trust verification, simple DID authentication might suffice.
 
 ---
 
-## 3. Resource Access and Delegation
+## 3. Access to Resources & Delegation
 
-DTIP supports a range of access mechanisms, from simple DID-based authentication to fine-grained credential-based control with delegation. Data owners choose the appropriate level based on their requirements—a partner verified through KYC might simply be whitelisted, while sensitive resources may require specific credentials with documented usage policies.
+A core principle od DTIP is that when two or more parties already know and trust eachother, they should be able to exchange data without long onboarding or compliance tests. Perhaps they already wexchange data via API's, and should be able to continue doing so while still being part of a larger network. That is what DTIP ensures.
+
+When certain resources require access rules, then the access credential is required.
 
 ### 3.1 Basic Access
 
-For resources that don't require fine-grained control, simple DID authentication suffices. The provider maintains a whitelist of authorized DIDs (or accepts any authenticated DID for public resources). Access works through challenge-response: the consumer proves they control their DID by signing a nonce, and the provider grants access if the DID is authorized for that resource.
+For resources that don't require fine-grained control, simple [DID Based authentication](#2.1DID-BasedAuthentication) suffices. The provider maintains a whitelist of authorized DIDs (or accepts any authenticated DID for public resources). Access is granted when the consumer proves they control their DID by signing a nonce.
 
 This is fast and requires no credential exchange. It works well when the question is simply "is this a known/permitted party?" rather than "what specific rights does this party have?"
 
 ### 3.2 Controlled Access
 
-When resources require specific permissions—scoped to particular data, limited in time, or restricted to certain actions—providers issue **Access Credentials**:
+When resources require specific permissions, e.g. scoped to particular data, limited in time, or restricted to certain actions, data owners issue an **Access Credential**. This is the core of controlled access: who, what resource, which actions, until when, and whether delegation is allowed.
 
-```json
-{
-  "type": ["VerifiableCredential", "AccessCredential"],
-  "issuer": "did:web:rail-operator.example",
-  "expirationDate": "2025-03-15T00:00:00Z",
-  "credentialSubject": {
-    "id": "did:web:logistics-partner.example",
-    "resource": "https://rail-operator.example/shipments/container-7842",
-    "actions": ["read", "write:status", "write:eta"],
-    "delegatable": false
-  },
-  "credentialStatus": {
-    "type": "TokenStatusList",
-    "statusListCredential": "https://rail-operator.example/status/1",
-    "statusListIndex": "42"
-  }
-}
-```
+Following the DDIP profile, the Data Consumer presents the credential via OID4VP. The provider verifies the signature (proving DID ownership), checks expiration and revocation status, and confirms the resource matches. Upon successful verification, the provider issues a short-lived OAuth access token, and API access proceeds normally.
 
-This is the core of controlled access: who, what resource, which actions, until when, and whether delegation is allowed. When the credential grants access to a specific data type (e.g., an eCMR), a domain-specific type can be added to the `type` array: `["VerifiableCredential", "AccessCredential", "eCMRAccessCredential"]`. This enables verifiers to request specific credential types via OID4VP—for example, customs can request "an eCMRAccessCredential" from a driver's wallet. The provider's authorization server verifies the Access Credential and issues a standard access token for the API—the same token format the API already expects.
-
-**Using an Access Credential:** Following the DIIP profile, the consumer presents the credential via OID4VP. The provider verifies the signature (proving DID ownership), checks expiration and revocation status, and confirms the resource matches. Upon successful verification, the provider issues an access token, and API access proceeds normally.
-
-**[Usage Policies](#glossary) (Optional):** Access Credentials can optionally include a `policy` field referencing or embedding an [ODRL](https://www.w3.org/TR/odrl-model/) policy:
-
-```json
-{
-  "credentialSubject": {
-    "id": "did:web:logistics-partner.example",
-    "resource": "https://rail-operator.example/shipments/*",
-    "actions": ["read"],
-    "policy": {
-      "@context": "http://www.w3.org/ns/odrl.jsonld",
-      "@type": "Agreement",
-      "permission": [{ "action": "use", "constraint": [{ "leftOperand": "purpose", "operator": "eq", "rightOperand": "logistics-optimization" }] }]
-    }
-  }
-}
-```
+Access Credentials may include a [Usage Policy](#glossary) in the `policy` field referencing or embedding an [ODRL](https://www.w3.org/TR/odrl-model/) policy.
 
 These policies are *documentation*, not technical enforcement—the profile cannot prevent a receiver from violating usage terms. What it does provide is an audit trail: the credential documents what was agreed, and access logs show who accessed what. Enforcement remains a contractual and legal matter. Organizations needing formal policy negotiation can layer protocols like DSP Contract Negotiation on top, but for most B2B relationships, the business contract and mutual trust already cover these concerns.
 
-### 3.3 Delegated Access ([Delegation Chain](#glossary))
+### 3.3 Resource Types
 
-Organizations holding an Access Credential can delegate access to partners, subcontractors, or automated systems by issuing a new credential that embeds the original. This creates a **[delegation chain](#glossary)**—a sequence of credentials transferring access rights from party to party, with each link embedding its parent in SD-JWT compact form.
+When the credential grants access to a specific data type (e.g., an eCMR), a domain-specific type can be added to the `type` array: `["VerifiableCredential", "AccessCredential", "eCMRAccessCredential"]`. This enables verifiers to request specific credential types via OID4VP—for example, customs can request "an eCMRAccessCredential" from a driver's wallet. The provider's authorization server verifies the Access Credential and issues a standard access token for the API—the same token format the API already expects.
 
-**Example: Multimodal Freight**
+
+### 3.4 Delegating Access
+
+Organizations holding an Access Credential may delegate access to partners, subcontractors, or automated systems by issuing a new credential that embeds the original credential. This creates a **delegation chain**: a sequence of credentials transferring access rights from party to party, with each link embedding its parent in SD-JWT compact form.
+
+**Example: Freight Forwarding**
 
 ```
 Port Authority (did:web:port.example)
@@ -261,13 +213,35 @@ Each delegation embeds its parent credential and can only grant a subset of the 
 
 This enables supply chain flexibility without involving the data owner in every sub-authorization. Partners delegate to their subcontractors autonomously. Each level enforces least privilege by restricting what it passes on. The full chain remains cryptographically verifiable, providing a complete audit trail.
 
-### 3.4 After Access is Granted
 
-The Access Credential is the standard outcome of any successful access grant. Whether a party was verified through a whitelist, public credentials, or a trust chain, the typical result is an Access Credential specifying their permissions. This gives the consumer a reusable credential—they don't need to re-prove their trustworthiness for every request.
+### 3.5 Example Access Credential
 
-For simple ongoing relationships, the provider might also add the party's DID to a whitelist, enabling basic DID authentication for subsequent access. But for controlled resources, the Access Credential remains the mechanism: present credential, receive access token, call API.
+Access Credential with type `eCMR` and delegatedm so it has a parent, and a policy:
 
-Access Credentials issued after trust verification are typically non-delegatable by default. The provider verified *this* party's credentials; they haven't necessarily vetted whoever that party might want to delegate to. Delegation rights can be granted explicitly when the business relationship warrants it.
+```json
+{
+  "type": ["VerifiableCredential", "AccessCredential", "eCmrAccessCredential"],
+  "issuer": "did:web:rail-operator.example",
+  "expirationDate": "2025-03-15T00:00:00Z",
+  "credentialSubject": {
+    "id": "did:web:logistics-partner.example",
+    "resource": "https://rail-operator.example/shipments/container-7842",
+    "actions": ["read", "write:status", "write:eta"],
+    "delegatable": true,
+    "parent": "ey......",
+    "policy": {
+      "@context": "http://www.w3.org/ns/odrl.jsonld",
+      "@type": "Agreement",
+      "permission": [{ "action": "use", "constraint": [{ "leftOperand": "purpose", "operator": "eq", "rightOperand": "logistics-optimization" }] }]
+    }
+  },
+  "credentialStatus": {
+    "type": "TokenStatusList",
+    "statusListCredential": "https://rail-operator.example/status/1",
+    "statusListIndex": "42"
+  }
+}
+```
 
 ---
 
@@ -330,6 +304,8 @@ Each verification step involves resolving the issuer's DID Document, checking th
 ## 5. Discovery
 
 How do organizations find potential data partners and available offerings across the network?
+
+An offering specifies what is available (title, description, category), what access requirements apply (credentials needed, trust level), and how to access it (API endpoints, subscription channels). The DID Document references a DCAT catalog endpoint, enabling discovery so other parties or "[discovery hubs](#glossary)" can see what's available without prior arrangement.
 
 ### 5.1 The Challenge
 
