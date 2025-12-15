@@ -8,7 +8,7 @@
 
 The **Decentralized Trust Interop Profile (DTIP)** is a lightweight technical profile that acts as a base layer for trust in digital data exchange. Unlike existing dataspace initiatives, DTIP ensures that every party retains full autonomy over its own trust decisions. This means there are no participants, nor is there centralized onboarding. It specifies a cohesive set of open standards that ensure interoperability across identity, trust, access, delegation, and peer-to-peer notifications. DTIP is designed to operate on top of existing infrastructure, and any domain-specific semantics, industry standards, or rules for participation may be plotted on top. It aims to complement dataspace initiatives such as Gaia-X, iSHARE, and the Data Space Protocol (DSP), and to also support human to machine interactions conforming to eIDAS 2.0.
 
-In DTIP, organizations, individuals, teams, or even devices or trucks are identified by a DID. The corresponding **public** DID Document serves as a foundational anchor: it contains public verifiable credentials, available service endpoints, and other relevant public metadata about the subject. Access to actual data-endpoints is granted by issuing a dedicated Access Credential, with embeded the conditions for access. These credentials may also be delegated to partners or subcontractors, building a verifiable audit trail while doing so. Trust is established individually by assessment of the public credentials. Those may include memberships, identities, declarations, or compliance statements such as the Gaia-X credential. Trust may be stored as a whitelisted DID for faster future data-exchange.
+In DTIP, organizations, individuals, teams, or even devices or trucks are identified by a DID. The corresponding **public** DID Document serves as a foundational anchor: it contains public verifiable credentials, available service endpoints, and other relevant public metadata about the subject. Access to actual data-endpoints is granted by issuing a dedicated Access Credential, with the conditions for access embedded. These credentials may also be delegated to partners or subcontractors, building a verifiable audit trail while doing so. Trust is established individually by assessment of the public credentials. Those may include memberships, identities, declarations, or compliance statements such as the Gaia-X credential. Trust may be stored as a whitelisted DID for faster future data-exchange.
 
 ---
 
@@ -16,11 +16,11 @@ In DTIP, organizations, individuals, teams, or even devices or trucks are identi
 
 European programmes like DSSC and DSIC have made digital collaboration across organizations a strategic priority. Current initiatives such as Gaia-X, iSHARE, and the Eclipse Dataspace Protocol aim to achieve this through governance models, compliance requirements, and specialized infrastructure. While valuable, these initiatives often couple trust mechanisms tightly with governance overhead, leaving a high barrier for participation and onboarding.
 
-A shared limitation is that even when two organizations already trust each other, they cannot exchange data directly without going through the dataspace infrastructure and onboarding. The technical footprint for adoption is relatively substantial with a high integration effort, and the introduction of new standards
+A shared limitation is that even when two organizations already trust each other, they cannot exchange data directly without going through the dataspace infrastructure and onboarding. The technical footprint for adoption is relatively substantial, with high integration effort and the introduction of new standards.
 
 However, all building blocks for a lightweight, decentralized trust infrastructure already exist: the W3C [Decentralized Identifiers](#glossary) (DIDs), [Verifiable Credentials](#glossary) (VCs), and [DIDComm](#glossary) messages. What's missing is agreement on how to combine them into a coherent base layer for digital collaboration.
 
-This whitepaper proposes exactly that: a base layer specifying how these existing standards should be applied for authentication, authorization, trust, delegation and communication, in the context of a dataspace. The goal is not to invent something new, but to agree to a set of choices so organizations can adopt a common technical language. An incremental trust protocol scaling from informal partnerships to heavily regulated industries, without forcing a one-size-fits-all framework. It fulfills the technical requirements of a dataspace such as identity, trust, authorization and interoperability, but without prescribing governance. Organizations can start with what they have and adopt capabilities incrementally. Also, existing protcols like the DSP Contract Negotiation protocol, can easily be layered on top, where DIDComm could serve as the secure transport for such negotiations. But it remains optional, as also many scenarios may work fine with direct but trusted access.
+This whitepaper proposes exactly that: a base layer specifying how these existing standards should be applied for authentication, authorization, trust, delegation and communication, in the context of a dataspace. The goal is not to invent something new, but to agree to a set of choices so organizations can adopt a common technical language. An incremental trust protocol scaling from informal partnerships to heavily regulated industries, without forcing a one-size-fits-all framework. It fulfills the technical requirements of a dataspace such as identity, trust, authorization and interoperability, but without prescribing governance. Organizations can start with what they have and adopt capabilities incrementally. Also, existing protocols like the DSP Contract Negotiation protocol can easily be layered on top, where DIDComm could serve as the secure transport for such negotiations. But it remains optional, as also many scenarios may work fine with direct but trusted access.
 
 The underlying technologies are mature. DIDs, Verifiable Credentials, and DIDComm all have W3C specifications, multiple implementations, downloadable tools, and growing adoption. What's lacking is consensus on how to apply them in dataspace contexts.
 
@@ -50,7 +50,7 @@ It has 6 core principles:
 
 5. **Transport Agnostic** — The trust protocol handles authorization, not data transfer. Use any API or transport.
 
-6. **Incremental Adoption** — The fundamental basis is the DID. Only that will already allow secure and trusted data exchange between known parties. The
+6. **Incremental Adoption** — The fundamental basis is the DID. That alone already enables secure and trusted data exchange between known parties.
 
 ### 1.2 Market Opportunities
 
@@ -64,7 +64,7 @@ Agreeing on a common trust layer will create significant market opportunities fo
 
 ## 2. Technical Foundation
 
-The backbone of DTIP are two common, W3C standardized concepts:
+The backbone of DTIP consists of two common, W3C-standardized concepts:
 
 - **Decentralized Identifiers**
 - **Verifiable Credentials**
@@ -147,11 +147,19 @@ Below is a DID Document presenting an authentication key, a DIDComm messaging en
 }
 ```
 
-Below an example of a verifiable credential representing an organizational identity:
+Below is an example of a verifiable credential representing an organizational identity:
 
 ```json
 {
-  "type": ["VerifiableCredential", "verifiableChamberOfCommerce"],
+  "type": ["VerifiableCredential", "ChamberOfCommerceCredential"],
+  "issuer": "did:web:kvk.nl",
+  "issuanceDate": "2024-06-01T00:00:00Z",
+  "expirationDate": "2025-06-01T00:00:00Z",
+  "credentialSubject": {
+    "id": "did:web:acme-logistics.example",
+    "legalName": "Acme Logistics B.V.",
+    "registrationNumber": "NL12345678"
+  }
 }
 ```
 
@@ -165,7 +173,7 @@ The Eclipse Decentralized Claims Protocol (DCP) requires sending VCs in a Verifi
 
 ## 3. Access to Resources & Delegation
 
-A core principle od DTIP is that when two or more parties already know and trust eachother, they should be able to exchange data without long onboarding or compliance tests. Perhaps they already wexchange data via API's, and should be able to continue doing so while still being part of a larger network. That is what DTIP ensures.
+A core principle of DTIP is that when two or more parties already know and trust each other, they should be able to exchange data without long onboarding or compliance tests. Perhaps they already exchange data via APIs, and should be able to continue doing so while still being part of a larger network. That is what DTIP ensures.
 
 When certain resources require access rules, then the access credential is required.
 
@@ -179,7 +187,7 @@ This is fast and requires no credential exchange. It works well when the questio
 
 When resources require specific permissions, e.g. scoped to particular data, limited in time, or restricted to certain actions, data owners issue an **Access Credential**. This is the core of controlled access: who, what resource, which actions, until when, and whether delegation is allowed.
 
-Following the DDIP profile, the Data Consumer presents the credential via OID4VP. The provider verifies the signature (proving DID ownership), checks expiration and revocation status, and confirms the resource matches. Upon successful verification, the provider issues a short-lived OAuth access token, and API access proceeds normally.
+Following the DIIP profile, the Data Consumer presents the credential via OID4VP. The provider verifies the signature (proving DID ownership), checks expiration and revocation status, and confirms the resource matches. Upon successful verification, the provider issues a short-lived OAuth access token, and API access proceeds normally.
 
 Access Credentials may include a [Usage Policy](#glossary) in the `policy` field referencing or embedding an [ODRL](https://www.w3.org/TR/odrl-model/) policy.
 
@@ -216,11 +224,11 @@ This enables supply chain flexibility without involving the data owner in every 
 
 ### 3.5 Example Access Credential
 
-Access Credential with type `eCMR` and delegatedm so it has a parent, and a policy:
+Access Credential with type `eCMR`, delegated (so it has a parent), and a policy:
 
 ```json
 {
-  "type": ["VerifiableCredential", "AccessCredential", "eCmrAccessCredential"],
+  "type": ["VerifiableCredential", "AccessCredential", "eCMRAccessCredential"],
   "issuer": "did:web:rail-operator.example",
   "expirationDate": "2025-03-15T00:00:00Z",
   "credentialSubject": {
