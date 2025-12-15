@@ -40,17 +40,17 @@ The profile operates on a foundational premise:
 
 It has 6 core principles:
 
-1. **No Central Authority** — DTIP is merely a set of minimal technical specifications.
+1. **No Gatekeepers** — No central authority, scheme membership, or onboarding required. Participation starts with a DID.
 
-2. **Progressive Trust** — Start with minimal proof (DID ownership), escalate to credentials only when the resource requires it.
+2. **Progressive Complexity** — Start with DID authentication for known parties. Add Access Credentials, public credentials, and other capabilities only as needed.
 
-3. **Fine-Grained Access Control & Delegation** — Access rights are expressible, transferable, and revocable without legal overhead.
+3. **Delegatable by Design** — Access rights flow through verifiable credential chains, enabling supply chain scenarios without central coordination.
 
-4. **Event-Driven Collaboration** — Parties are notified of changes in real-time, not just able to pull data.
+4. **Infrastructure Agnostic** — The trust layer sits on top of existing APIs, transports, and data formats. No new infrastructure required.
 
-5. **Transport Agnostic** — The trust protocol handles authorization, not data transfer. Use any API or transport.
+5. **Event-Driven Collaboration** — Beyond pull-based access; parties subscribe to changes and react in real-time through secure peer-to-peer notifications.
 
-6. **Incremental Adoption** — The fundamental basis is the DID. That alone already enables secure and trusted data exchange between known parties.
+6. **Built on Open Standards** — Assembles existing W3C and emerging standards (DIDs, VCs, DCAT, ODRL, DIDComm) rather than inventing new ones.
 
 ### 1.2 Market Opportunities
 
