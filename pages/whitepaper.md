@@ -42,15 +42,15 @@ If trust already exists, the profile enables parties to collaborate directly, wi
 
 DTIP has 5 core principles:
 
-1. **Only Open Standards** — DTIP is based purely on existing standards (DIDs, VCs, DCAT, ODRL, DIDComm).
+1. **Only Open Standards** — DTIP exclusively uses existing standards (DIDs, VCs, DCAT, ODRL, DIDComm).
 
-2. **Infrastructure is Preserved** — Existing APIs or data formats are maintained, only Authorization is changed.
+2. **Infrastructure is Preserved** — Existing APIs and semantics remain unchanged, only authorization is addressed.
 
-3. **Complexity is Progressive** — Start simple, only add extra services when needed.
+3. **Complexity is Progressive** — Start simple and evolve by adding capabilities only when needed.
 
-4. **Access is Delegatable** — Access to some resource may be passed down to other parties.
+4. **Access is Delegatable** — Access to a resource may be delegated to other parties.
 
-5. **Collaboration is Event-Driven** — Subscribe to updates on resources to receive real-time notifications.
+5. **Collaboration is Event-Driven** — Subscribe to resource updates to receive real-time notifications.
 
 
 ### 1.2 Market Opportunities
