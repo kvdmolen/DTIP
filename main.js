@@ -89,6 +89,7 @@ const generateTOC = (tokens) => {
 
 // Google Analytics helper
 const trackPageView = (pageId, sectionId = null) => {
+  console.log(typeof gtag)
   if (typeof gtag !== 'function') return
   const page = pages.find(p => p.id === pageId)
   const path = sectionId ? `/${pageId}#${sectionId}` : `/${pageId}`
