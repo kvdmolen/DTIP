@@ -184,7 +184,21 @@ These policies are *documentation*, not technical enforcement—the profile cann
 
 ### 3.3 Resource Types
 
-When the credential grants access to a specific data type (e.g., an eCMR), a domain-specific type can be added to the `type` array: `["VerifiableCredential", "AccessCredential", "eCMRAccessCredential"]`. This enables verifiers to request specific credential types via OID4VP—for example, customs can request "an eCMRAccessCredential" from a driver's wallet. The provider's authorization server verifies the Access Credential and issues a standard access token for the API—the same token format the API already expects.
+When the credential grants access to a specific resource, the `resource` field contains structured information:
+
+```json
+"resource": {
+  "uri": "https://api.example.com/shipments/123",
+  "type": "eCMR",
+  "schema": "https://schemas.example.org/ecmr/v1.0.json"
+}
+```
+
+- **uri**: The resource endpoint being accessed
+- **type**: A human-readable resource type for filtering (e.g., "eCMR", "invoice")
+- **schema**: An optional reference to the resource's structure (JSON Schema or OpenAPI)
+
+This enables verifiers to request Access Credentials for specific resource types via OID4VP—for example, customs can request credentials where `resource.type` equals "eCMR" from a driver's wallet. The provider's authorization server verifies the Access Credential and issues a standard access token for the API.
 
 
 ### 3.4 Delegating Access
@@ -213,23 +227,34 @@ This enables supply chain flexibility without involving the data owner in every 
 
 ### 3.5 Example Access Credential
 
-Access Credential with type `eCMR`, delegated (so it has a parent), and a policy:
+Access Credential for an eCMR resource, delegated (so it has a parent), with a usage policy:
 
 ```json
 {
-  "type": ["VerifiableCredential", "AccessCredential", "eCMRAccessCredential"],
+  "type": ["VerifiableCredential", "AccessCredential"],
   "issuer": "did:web:rail-operator.example",
   "expirationDate": "2025-03-15T00:00:00Z",
   "credentialSubject": {
     "id": "did:web:logistics-partner.example",
-    "resource": "https://rail-operator.example/shipments/container-7842",
+    "resource": {
+      "uri": "https://rail-operator.example/shipments/container-7842",
+      "type": "eCMR",
+      "schema": "https://schemas.dtip.org/ecmr/v1.0.json"
+    },
     "actions": ["read", "write:status", "write:eta"],
     "delegatable": true,
     "parent": "ey......",
     "policy": {
       "@context": "http://www.w3.org/ns/odrl.jsonld",
       "@type": "Agreement",
-      "permission": [{ "action": "use", "constraint": [{ "leftOperand": "purpose", "operator": "eq", "rightOperand": "logistics-optimization" }] }]
+      "permission": [{
+        "action": "use",
+        "constraint": [{
+          "leftOperand": "purpose",
+          "operator": "eq",
+          "rightOperand": "logistics-optimization"
+        }]
+      }]
     }
   },
   "credentialStatus": {
