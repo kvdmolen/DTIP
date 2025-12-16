@@ -36,21 +36,22 @@ The profile is agnostic about data-transport, meaning it can sit on top of exist
 
 The profile operates on a foundational premise:
 
-> **Each participant retains full autonomy over their own trust decisions: Self-Sovereign Trust**
+> **Self-Sovereign Trust: each participant retains full autonomy over their own trust decisions**
 
-It has 6 core principles:
+If trust already exists, the profile enables parties to collaborate directly, without onboarding or compliance checks. If trust does not exist, data owners independently define what trust requirements must be met, and shares that with data consumers, allowing those consumers to comply in order to gain access.
 
-1. **No Gatekeepers** — No central authority, scheme membership, or onboarding required. Participation starts with a DID.
+DTIP has 5 core principles:
 
-2. **Progressive Complexity** — Start with DID authentication for known parties. Add Access Credentials, public credentials, and other capabilities only as needed.
+1. **Only Open Standards** — DTIP is based purely on existing standards (DIDs, VCs, DCAT, ODRL, DIDComm).
 
-3. **Delegatable by Design** — Access rights flow through verifiable credential chains, enabling supply chain scenarios without central coordination.
+2. **Infrastructure is Preserved** — Existing APIs or data formats are maintained, only Authorization is changed.
 
-4. **Infrastructure Agnostic** — The trust layer sits on top of existing APIs, transports, and data formats. No new infrastructure required.
+3. **Complexity is Progressive** — Start simple, only add extra services when needed.
 
-5. **Event-Driven Collaboration** — Beyond pull-based access; parties subscribe to changes and react in real-time through secure peer-to-peer notifications.
+4. **Access is Delegatable** — Access to some resource may be passed down to other parties.
 
-6. **Built on Open Standards** — Assembles existing W3C and emerging standards (DIDs, VCs, DCAT, ODRL, DIDComm) rather than inventing new ones.
+5. **Collaboration is Event-Driven** — Subscribe to updates on resources to receive real-time notifications.
+
 
 ### 1.2 Market Opportunities
 
@@ -59,6 +60,7 @@ Agreeing on a common trust layer will create significant market opportunities fo
 - **Connectors** for interfacing with existing platforms like ERPs and logistics systems.
 - **Trust Services** to help organizations assess trust.
 - **Discovery Hubs** to index offerings across the network.
+- And many more..
 
 ---
 
