@@ -14,23 +14,17 @@ In DTIP, organizations, individuals, teams, or even devices or trucks are identi
 
 ## 1. Introduction
 
-European programmes like DSSC and DSIC have made digital collaboration across organizations a strategic priority. Current initiatives such as Gaia-X, iSHARE, and the Eclipse Dataspace Protocol aim to achieve this through governance models, compliance requirements, and specialized infrastructure. While valuable, these initiatives often couple trust mechanisms tightly with governance overhead, leaving a high barrier for participation and onboarding.
+European programmes like DSSC and DSIC have made digital collaboration across organizations a strategic priority. Current initiatives such as Gaia-X, iSHARE, and the Eclipse Dataspace Protocol aim to achieve this through governance models, compliance requirements, and specialized infrastructure. While valuable, these approaches often couple trust mechanisms tightly with governance overhead, creating barriers to participation. Even when two organizations already trust each other, they cannot exchange data directly without going through dataspace infrastructure and onboarding.
 
-A shared limitation is that even when two organizations already trust each other, they cannot exchange data directly without going through the dataspace infrastructure and onboarding. The technical footprint for adoption is relatively substantial, with high integration effort and the introduction of new standards.
+All building blocks for a lightweight, decentralized trust infrastructure already exist: W3C [Decentralized Identifiers](#glossary) (DIDs), [Verifiable Credentials](#glossary) (VCs), and [DIDComm](#glossary) messages. What's missing is agreement on how to combine them into a coherent base layer.
 
-However, all building blocks for a lightweight, decentralized trust infrastructure already exist: the W3C [Decentralized Identifiers](#glossary) (DIDs), [Verifiable Credentials](#glossary) (VCs), and [DIDComm](#glossary) messages. What's missing is agreement on how to combine them into a coherent base layer for digital collaboration.
+This whitepaper proposes exactly that: a technical profile specifying how these standards should be applied for authentication, authorization, trust, delegation, and communication. The goal is not to invent something new, but to agree on a set of choices so organizations can adopt a common technical language—one that scales from informal partnerships to heavily regulated industries.
 
-This whitepaper proposes exactly that: a base layer specifying how these existing standards should be applied for authentication, authorization, trust, delegation and communication, in the context of a dataspace. The goal is not to invent something new, but to agree to a set of choices so organizations can adopt a common technical language. An incremental trust protocol scaling from informal partnerships to heavily regulated industries, without forcing a one-size-fits-all framework. It fulfills the technical requirements of a dataspace such as identity, trust, authorization and interoperability, but without prescribing governance. Organizations can start with what they have and adopt capabilities incrementally. Also, existing protocols like the DSP Contract Negotiation protocol can easily be layered on top, where DIDComm could serve as the secure transport for such negotiations. But it remains optional, as also many scenarios may work fine with direct but trusted access.
-
-The underlying technologies are mature. DIDs, Verifiable Credentials, and DIDComm all have W3C specifications, multiple implementations, downloadable tools, and growing adoption. What's lacking is consensus on how to apply them in dataspace contexts.
-
-DTIP builds on established specifications rather than defining new ones:
+DTIP builds on established specifications:
 - [DIIP](https://fidescommunity.github.io/DIIP/) for credential formats (SD-JWT VC) and exchange protocols (OID4VCI, OID4VP)
 - [DCAT](https://www.w3.org/TR/vocab-dcat-3/) for data catalog and offering descriptions
 - [ODRL](https://www.w3.org/TR/odrl-model/) for usage policy expression
 - [DIDComm v2](https://identity.foundation/didcomm-messaging/spec/) for secure peer-to-peer messaging
-
-The profile is agnostic about data-transport, meaning it can sit on top of existing infrastructure. Adoption may be incremental, starting with basic DID authentication for known parties, and adding capabilities as needed. Also the profile is agnostic about semantics, allowing any domain-specific roles or semantics being added on top.
 
 ### 1.1 Foundational Premise
 
