@@ -87,6 +87,19 @@ const generateTOC = (tokens) => {
     })
 }
 
+// Google Analytics helper
+const trackPageView = (pageId, sectionId = null) => {
+  if (typeof gtag !== 'function') return
+  const page = pages.find(p => p.id === pageId)
+  const path = sectionId ? `/${pageId}#${sectionId}` : `/${pageId}`
+  const title = page ? `${page.label} - DTIP` : 'DTIP'
+  gtag('event', 'page_view', {
+    page_path: path,
+    page_title: title,
+    page_location: window.location.href
+  })
+}
+
 // URL hash utilities
 const getPageFromHash = () => {
   const hash = window.location.hash
@@ -167,11 +180,13 @@ const App = defineComponent({
       currentPage.value = pageId
       window.history.pushState(null, '', `#/${pageId}`)
       loadPage(pageId)
+      trackPageView(pageId)
     }
 
     const navigateToSection = (sectionId) => {
       window.history.pushState(null, '', `#/${currentPage.value}#${sectionId}`)
       document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
+      trackPageView(currentPage.value, sectionId)
     }
 
     onMounted(() => {
@@ -190,8 +205,10 @@ const App = defineComponent({
         if (pageId !== currentPage.value) {
           currentPage.value = pageId
           loadPage(pageId, sectionId)
+          trackPageView(pageId, sectionId)
         } else if (sectionId) {
           document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' })
+          trackPageView(pageId, sectionId)
         }
       })
     })
