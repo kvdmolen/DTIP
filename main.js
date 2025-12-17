@@ -89,11 +89,11 @@ const generateTOC = (tokens) => {
 
 // Google Analytics helper
 const trackPageView = (pageId, sectionId = null) => {
-  console.log(typeof gtag)
-  if (typeof gtag !== 'function') return
   const page = pages.find(p => p.id === pageId)
-  const path = sectionId ? `/${pageId}#${sectionId}` : `/${pageId}`
   const title = page ? `${page.label} - DTIP` : 'DTIP'
+  document.title = title
+  if (typeof gtag !== 'function') return
+  const path = sectionId ? `/${pageId}#${sectionId}` : `/${pageId}`
   gtag('event', 'page_view', {
     page_path: path,
     page_title: title,
